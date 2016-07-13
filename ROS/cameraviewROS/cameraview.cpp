@@ -66,10 +66,10 @@ int main(int argc, char** argv){
 	Ice::CommunicatorPtr ic = EasyIce::initialize(argc,argv);;
 	Ice::PropertiesPtr prop = ic->getProperties();
 	
-	//1: Ice    2:ROS
-	int driver = prop.getPropertyAsIntWithDefault("Ice.Driver", 1)
+	//0: Ice    other:ROS
+	int driver = prop.getPropertyAsIntWithDefault("Ice.Driver", 0);
 
-	if (driver == 1) {   //Try to connect with ICE
+	if (driver == 0) {   //Try to connect with ICE
 
 		std::cout << "Receiving data from ICE interfaces" << std::endl;
 		try{
