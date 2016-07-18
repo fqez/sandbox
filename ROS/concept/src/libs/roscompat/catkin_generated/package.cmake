@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "roscompat")
+set(roscompat_MAINTAINER "shady <shady@todo.todo>")
+set(roscompat_DEPRECATED "")
+set(roscompat_VERSION "0.0.1")
+set(roscompat_BUILD_DEPENDS "roscpp" "std_msgs" "message_generation")
+set(roscompat_RUN_DEPENDS "message_runtime" "roscpp" "std_msgs")
+set(roscompat_BUILDTOOL_DEPENDS "catkin")

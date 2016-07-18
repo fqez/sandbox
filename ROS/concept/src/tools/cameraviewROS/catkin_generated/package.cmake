@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "jderobot")
+set(jderobot_MAINTAINER "shady <shady@todo.todo>")
+set(jderobot_DEPRECATED "")
+set(jderobot_VERSION "0.0.0")
+set(jderobot_BUILD_DEPENDS "roscpp" "std_msgs" "message_generation")
+set(jderobot_RUN_DEPENDS "message_runtime" "roscpp" "std_msgs")
+set(jderobot_BUILDTOOL_DEPENDS "catkin")
