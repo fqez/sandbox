@@ -65,3 +65,7 @@ MESSAGE("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ${roscompat_INCLUDE_DIRS}")
 MESSAGE("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB ${roscompat_LIBRARY_DIRS}")
 MESSAGE("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC1111 ${roscompat_LIBRARIES}")
 
+add_executable(camdriver src/CameraDriver.cpp)
+include_directories(${OpenCV_INCLUDE_DIRS})
+target_link_libraries(camdriver ${catkin_LIBRARIES} ${OpenCV_LIBS} ${OpenCV_LIBRARIES})
+add_dependencies(camdriver roscompat_generate_messages_cpp)
