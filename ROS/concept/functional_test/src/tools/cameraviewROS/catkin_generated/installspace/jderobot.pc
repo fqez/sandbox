@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: jderobot
+Description: Description of jderobot
+Version: 0.0.0
+Cflags: -I/usr/local/include
+Libs: -L/usr/local/lib 
+Requires: roscpp std_msgs message_runtime

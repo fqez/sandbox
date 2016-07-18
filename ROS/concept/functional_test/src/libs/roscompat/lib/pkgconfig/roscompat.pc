@@ -1,0 +1,8 @@
+prefix=/home/fran/git/testRos/src/libs/roscompat
+
+Name: roscompat
+Description: Description of roscompat
+Version: 0.0.1
+Cflags: -I/home/fran/git/testRos/src/libs/roscompat/include
+Libs: -L/home/fran/git/testRos/src/libs/roscompat/lib -lroscompat
+Requires: roscpp std_msgs message_runtime

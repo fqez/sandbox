@@ -1,0 +1,2 @@
+set(jderobot_MESSAGE_FILES "/home/fran/git/fqez/src/tools/cameraviewROS/msg/Num.msg")
+set(jderobot_SERVICE_FILES "")

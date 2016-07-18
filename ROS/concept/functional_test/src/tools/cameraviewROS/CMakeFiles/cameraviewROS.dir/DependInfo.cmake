@@ -1,0 +1,102 @@
+# The set of languages for which implicit dependencies are needed:
+set(CMAKE_DEPENDS_LANGUAGES
+  "CXX"
+  )
+# The set of files for implicit dependencies of each language:
+set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/fran/git/testRos/src/tools/cameraviewROS/cameraview.cpp" "/home/fran/git/testRos/src/tools/cameraviewROS/CMakeFiles/cameraviewROS.dir/cameraview.cpp.o"
+  "/home/fran/git/testRos/src/tools/cameraviewROS/viewer.cpp" "/home/fran/git/testRos/src/tools/cameraviewROS/CMakeFiles/cameraviewROS.dir/viewer.cpp.o"
+  )
+set(CMAKE_CXX_COMPILER_ID "GNU")
+
+# Preprocessor definitions for this target.
+set(CMAKE_TARGET_DEFINITIONS_CXX
+  "DISABLE_PCAP"
+  "DISABLE_PNG"
+  "EIGEN_USE_NEW_STDVECTOR"
+  "EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET"
+  "FLANN_STATIC"
+  "QT_CORE_LIB"
+  "QT_GUI_LIB"
+  "QT_NO_DEBUG"
+  "QT_OPENGL_LIB"
+  "qh_QHpointer"
+  )
+
+# The include file search paths:
+set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "/usr/include/eigen3"
+  "/usr/include/gazebo-5.3/gazebo"
+  "/usr/include/gazebo-5.3"
+  "/usr/include/sdformat-2.3/gazebo"
+  "/usr/include/sdformat-2.3"
+  "/usr/include/libxml2"
+  "/usr/include/glibmm-2.4"
+  "/usr/lib/x86_64-linux-gnu/glibmm-2.4/include"
+  "/usr/include/sigc++-2.0"
+  "/usr/lib/x86_64-linux-gnu/sigc++-2.0/include"
+  "/usr/include/glib-2.0"
+  "/usr/lib/x86_64-linux-gnu/glib-2.0/include"
+  "/usr/include/libxml++-2.6"
+  "/usr/lib/libxml++-2.6/include"
+  "/usr/include/libxml2/libxml"
+  "/usr/include/OGRE/Paging"
+  "/usr/include/OGRE"
+  "/usr/include/opencv"
+  "/usr/include/ni"
+  "/usr/include/openni2"
+  "/usr/include/vtk-5.8"
+  "/usr/include/pcl-1.7"
+  "/usr/include/qt4"
+  "/usr/include/qt4/QtOpenGL"
+  "/usr/include/qt4/QtGui"
+  "/usr/include/qt4/QtCore"
+  "src/interfaces/cpp/jderobot"
+  "src/interfaces/cpp"
+  "src/libs"
+  "src/tools/cameraviewROS"
+  "/usr/include/gtkmm-2.4"
+  "/usr/lib/x86_64-linux-gnu/gtkmm-2.4/include"
+  "/usr/include/atkmm-1.6"
+  "/usr/include/giomm-2.4"
+  "/usr/lib/x86_64-linux-gnu/giomm-2.4/include"
+  "/usr/include/pangomm-1.4"
+  "/usr/lib/x86_64-linux-gnu/pangomm-1.4/include"
+  "/usr/include/gtk-2.0"
+  "/usr/include/gtk-unix-print-2.0"
+  "/usr/include/gdkmm-2.4"
+  "/usr/lib/x86_64-linux-gnu/gdkmm-2.4/include"
+  "/usr/include/atk-1.0"
+  "/usr/include/cairomm-1.0"
+  "/usr/lib/x86_64-linux-gnu/cairomm-1.0/include"
+  "/usr/include/pango-1.0"
+  "/usr/include/cairo"
+  "/usr/include/pixman-1"
+  "/usr/include/freetype2"
+  "/usr/include/libpng12"
+  "/usr/lib/x86_64-linux-gnu/gtk-2.0/include"
+  "/usr/include/gdk-pixbuf-2.0"
+  "/usr/include/gio-unix-2.0"
+  "/usr/include/harfbuzz"
+  "/usr/include/libglade-2.0"
+  "/usr/include/libglademm-2.4"
+  "/usr/lib/libglademm-2.4/include"
+  "/usr/include/gtkglextmm-1.2"
+  "/usr/lib/x86_64-linux-gnu/gtkglextmm-1.2/include"
+  "/usr/include/gtkglext-1.0"
+  "/usr/lib/gtkglext-1.0/include"
+  "src/libs/resourcelocator/include"
+  "src/libs/easyiceconfig_cpp/include"
+  "src/libs/roscompat/include"
+  )
+
+# Targets to which this target links.
+set(CMAKE_TARGET_LINKED_INFO_FILES
+  "/home/fran/git/testRos/src/interfaces/CMakeFiles/JderobotInterfaces.dir/DependInfo.cmake"
+  "/home/fran/git/testRos/src/libs/parallelIce/CMakeFiles/parallelIce.dir/DependInfo.cmake"
+  "/home/fran/git/testRos/src/libs/easyiceconfig_cpp/CMakeFiles/easyiceconfig.dir/DependInfo.cmake"
+  "/home/fran/git/testRos/src/libs/resourcelocator/CMakeFiles/resourcelocator.dir/DependInfo.cmake"
+  "/home/fran/git/testRos/src/libs/roscompat/CMakeFiles/roscompat.dir/DependInfo.cmake"
+  "/home/fran/git/testRos/src/libs/visionlib/colorspaces/CMakeFiles/colorspacesmm.dir/DependInfo.cmake"
+  "/home/fran/git/testRos/src/libs/log/CMakeFiles/logger.dir/DependInfo.cmake"
+  )
