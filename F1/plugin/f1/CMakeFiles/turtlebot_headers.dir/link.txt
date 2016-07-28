@@ -1,0 +1,2 @@
+/usr/bin/ar cr libturtlebot_headers.a  
+/usr/bin/ranlib libturtlebot_headers.a
