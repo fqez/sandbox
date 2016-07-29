@@ -276,13 +276,13 @@
         <gravity>0</gravity>
         <inertial>
           <mass>0.0500000</mass>
-          <inertia>
-          	<ixx>0.000002</ixx>
+		  <inertia>
+          	<ixx>0.000000833</ixx>
           	<ixy>0.0</ixy>
-          	<iyy>0.000002</iyy>
+          	<iyy>0.000000833</iyy>
           	<ixz>0.0</ixz>
           	<iyz>0.0</iyz>
-          	<izz>0.000002</izz>
+          	<izz>0.000000833</izz>
           </inertia>
         </inertial>
         <visual name='visual'>
@@ -294,9 +294,9 @@
         </visual>
         <collision name='collision'>
           <geometry>
-            <mesh>
-              <uri>model://f1/meshes/hokuyo.dae</uri>
-            </mesh>
+            <box>
+            	<size>.01 .01 .01</size>
+            </box>
           </geometry>
           <max_contacts>10</max_contacts>
         </collision>
