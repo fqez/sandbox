@@ -15,12 +15,12 @@
     <link name="f1">
     	<pose>0 0 0 0 0 0</pose>
     	<inertial>
-          	<mass>1</mass>
+          	<mass>10</mass>
           <inertia>
             <ixx>1</ixx>
           	<ixy>0</ixy>
-          	<iyy>0</iyy>
-          	<ixz>1</ixz>
+          	<iyy>1</iyy>
+          	<ixz>0</ixz>
           	<iyz>0</iyz>
           	<izz>1</izz>
           </inertia>
@@ -42,23 +42,24 @@
     </link>
 
     <link name="front_right_wheel">
-    	<pose>-0.16 0 0.06 0 0 0</pose>
+    	<pose>-0.16 0 0.06 0 1.57 0</pose>
           <inertial>
-          	<mass>0.1</mass>
+          	<mass>1.5</mass>
           <inertia>
-            <ixx>0.5</ixx>
+            <ixx>0.002100875</ixx>
           	<ixy>0.0</ixy>
-          	<iyy>0.5</iyy>
+          	<iyy>0.002100875</iyy>
           	<ixz>0.0</ixz>
           	<iyz>0.0</iyz>
-          	<izz>1.0</izz>
+          	<izz>0.00297675</izz>
           </inertia>
       	</inertial>
         <collision name="collision">
           <geometry>
-            <mesh>
-              <uri>model://f1/meshes/wheel.dae</uri>
-          	</mesh>
+            <cylinder>
+            	<radius>.063</radius>
+            	<length>.07</length>
+            </cylinder>
           </geometry>
         </collision>
         <visual name="visual">
@@ -71,23 +72,24 @@
     </link>
 
     <link name="front_left_wheel">
-        <pose>0.16 0 0.06 0 0 0</pose>
+        <pose>0.16 0 0.06 0 1.57 0</pose>
           <inertial>
-        	<mass>0.1</mass>
+        	<mass>1.5</mass>
           <inertia>
-          	<ixx>0.5</ixx>
+          	<ixx>0.002100875</ixx>
           	<ixy>0.0</ixy>
-          	<iyy>0.5</iyy>
+          	<iyy>0.002100875</iyy>
           	<ixz>0.0</ixz>
           	<iyz>0.0</iyz>
-          	<izz>1.0</izz>
+          	<izz>0.00297675</izz>
           </inertia>
       	</inertial>
         <collision name="collision">
           <geometry>
-            <mesh>
-              <uri>model://f1/meshes/wheel.dae</uri>
-          	</mesh>
+            <cylinder>
+            	<radius>.063</radius>
+            	<length>.07</length>
+            </cylinder>
           </geometry>
         </collision>
         <visual name="visual">
@@ -100,23 +102,24 @@
     </link>
 
     <link name="rear_left_wheel">
-        <pose>0.16 0.58 0.06 0 0 0</pose>
+        <pose>0.16 0.58 0.06 0 1.57 0</pose>  <!-- rotation of 90 deg in y-axis, now x=-z y=y z=x take in count for the joints axis-->
           <inertial>
-        	<mass>0.3</mass>
+        	<mass>2</mass>
           <inertia>
-          	<ixx>0.5</ixx>
+          	<ixx>0.002801167</ixx>
           	<ixy>0.0</ixy>
-          	<iyy>0.5</iyy>
+          	<iyy>0.002801167</iyy>
           	<ixz>0.0</ixz>
           	<iyz>0.0</iyz>
-          	<izz>1.0</izz>
+          	<izz>0.003969</izz>
           </inertia>
         </inertial>
         <collision name="collision">
           <geometry>
-            <mesh>
-              <uri>model://f1/meshes/wheel.dae</uri>
-          	</mesh>
+            <cylinder>
+            	<radius>.063</radius>
+            	<length>.07</length>
+            </cylinder>
           </geometry>
         </collision>
         <visual name="visual">
@@ -129,23 +132,24 @@
     </link>
  
     <link name="rear_right_wheel">
-        <pose>-0.16 0.58 0.06 0 0 0</pose>
+        <pose>-0.16 0.58 0.06 0 1.57 0</pose>
           <inertial>
-       		<mass>0.3</mass>
+       		<mass>2</mass>
           <inertia>
-          	<ixx>0.5</ixx>
+          	<ixx>0.002801167</ixx>
           	<ixy>0.0</ixy>
-          	<iyy>0.5</iyy>
+          	<iyy>0.002801167</iyy>
           	<ixz>0.0</ixz>
           	<iyz>0.0</iyz>
-          	<izz>1.0</izz>
+          	<izz>0.003969</izz>
         </inertia>
         </inertial>
         <collision name="collision">
           <geometry>
-            <mesh>
-              <uri>model://f1/meshes/wheel.dae</uri>
-          	</mesh>
+            <cylinder>
+            	<radius>.063</radius>
+            	<length>.07</length>
+            </cylinder>
           </geometry>
         </collision>
         <visual name="visual">
@@ -160,7 +164,15 @@
 	<link name='camera_top_body_left'>
         <pose>0.050000 -0.09000 0.1442400 0.000000 -0.000000 0.000000</pose>
         <inertial>
-          <mass>0.00500000</mass>
+          <mass>0.0500000</mass>
+          <inertia>
+          	<ixx>0.000002</ixx>
+          	<ixy>0.0</ixy>
+          	<iyy>0.000002</iyy>
+          	<ixz>0.0</ixz>
+          	<iyz>0.0</iyz>
+          	<izz>0.000002</izz>
+          </inertia>
         </inertial>
         <sensor name='cam_formula1_left' type='camera'>
           <pose>0.000000 0.000000 0.000000  0.00000 0.00000 -1.57000 </pose>
@@ -188,24 +200,10 @@
         </visual>
         <collision name='collision'>
           <geometry>
-            <box>
-              <size>0.100000 0.100000 0.100000</size>
-            </box>
+            <sphere>
+              <radius>.01</radius>
+			</sphere>
           </geometry>
-          <surface>
-            <friction>
-              <ode>
-                <mu>100000.000000</mu>
-                <mu2>100000.000000</mu2>
-                <slip1>0.000000</slip1>
-                <slip2>0.000000</slip2>
-              </ode>
-            </friction>
-            <bounce/>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
           <max_contacts>10</max_contacts>
         </collision>
         <velocity_decay>
@@ -220,7 +218,15 @@
 	<link name='camera_top_body_right'>
         <pose>-0.050000 -0.09000 0.1442400 0.000000 -0.000000 0.0000000</pose>
         <inertial>
-          <mass>0.00500000</mass>
+          <mass>0.0500000</mass>
+          <inertia>
+          	<ixx>0.000002</ixx>
+          	<ixy>0.0</ixy>
+          	<iyy>0.000002</iyy>
+          	<ixz>0.0</ixz>
+          	<iyz>0.0</iyz>
+          	<izz>0.000002</izz>
+          </inertia>
           <inertia>
           </inertia>
         </inertial>
@@ -250,24 +256,10 @@
         </visual>
         <collision name='collision'>
           <geometry>
-            <box>
-              <size>0.100000 0.100000 0.100000</size>
-            </box>
+            <sphere>
+              <radius>.01</radius>
+			</sphere>
           </geometry>
-          <surface>
-            <friction>
-              <ode>
-                <mu>100000.000000</mu>
-                <mu2>100000.000000</mu2>
-                <slip1>0.000000</slip1>
-                <slip2>0.000000</slip2>
-              </ode>
-            </friction>
-            <bounce/>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
           <max_contacts>10</max_contacts>
         </collision>
         <velocity_decay>
@@ -283,14 +275,14 @@
         <pose>0.000000 -0.190000 0.072000 0.000000 0.000000 -1.570000</pose>
         <gravity>0</gravity>
         <inertial>
-          <mass>0.100000</mass>
+          <mass>0.0500000</mass>
           <inertia>
-            <ixx>1.000000</ixx>
-            <ixy>0.000000</ixy>
-            <ixz>0.000000</ixz>
-            <iyy>1.000000</iyy>
-            <iyz>0.000000</iyz>
-            <izz>1.000000</izz>
+          	<ixx>0.000002</ixx>
+          	<ixy>0.0</ixy>
+          	<iyy>0.000002</iyy>
+          	<ixz>0.0</ixz>
+          	<iyz>0.0</iyz>
+          	<izz>0.000002</izz>
           </inertia>
         </inertial>
         <visual name='visual'>
@@ -300,42 +292,13 @@
             </mesh>
           </geometry>
         </visual>
-        <collision name='collision-base'>
-          <pose>0.000000 0.000000 -0.014500 0.000000 0.000000 0.000000</pose>
+        <collision name='collision'>
           <geometry>
-            <box>
-              <size>0.050000 0.050000 0.041000</size>
-            </box>
+            <mesh>
+              <uri>model://f1/meshes/hokuyo.dae</uri>
+            </mesh>
           </geometry>
           <max_contacts>10</max_contacts>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
-        </collision>
-        <collision name='collision-top'>
-          <pose>0.000000 0.000000 0.020500 0.000000 0.000000 0.000000</pose>
-          <geometry>
-            <cylinder>
-              <radius>0.021000</radius>
-              <length>0.029000</length>
-            </cylinder>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <bounce/>
-            <friction>
-              <ode/>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-          </surface>
         </collision>
         <sensor name='laser' type='ray'>
           <ray>
@@ -366,49 +329,69 @@
         <kinematic>0</kinematic>
     </link>
       
-      <link name='steer_left'>
-	      <pose>0.16 0 0.06 0 0 0</pose>
-
-	<collision name="collision">
+    <link name='steer_left'>
+	  <pose>0.16 0 0.06 0 1.57 0</pose>
+	  <inertial>
+        	<mass>0.01</mass>
+          <inertia>
+          	<ixx>0.0000004</ixx>
+          	<ixy>0.0</ixy>
+          	<iyy>0.0000004</iyy>
+          	<ixz>0.0</ixz>
+          	<iyz>0.0</iyz>
+          	<izz>0.0000004</izz>
+          </inertia>
+        </inertial>
+	  <collision name="collision">
+      	<geometry>
+          <sphere>
+          	<radius>0.01</radius>
+          </sphere>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <sphere>
+          	<radius>0.01</radius>
+          </sphere>
+        </geometry>
+      </visual>
+	</link>
+	<link name='steer_right'>
+		<inertial>
+        	<mass>0.01</mass>
+          <inertia>
+          	<ixx>0.0000004</ixx>
+          	<ixy>0.0</ixy>
+          	<iyy>0.0000004</iyy>
+          	<ixz>0.0</ixz>
+          	<iyz>0.0</iyz>
+          	<izz>0.0000004</izz>
+          </inertia>
+        </inertial>
+	  <pose>-0.16 0 0.06 0 1.57 0</pose>
+		<collision name="collision">
           <geometry>
             <sphere>
-            	<radius>0.01</radius>
+              <radius>0.01</radius>
             </sphere>
           </geometry>
         </collision>
         <visual name="visual">
           <geometry>
             <sphere>
-            	<radius>0.01</radius>
+              <radius>0.01</radius>
             </sphere>
           </geometry>
         </visual>
-</link>
-<link name='steer_right'>
-	      <pose>-0.16 0 0.06 0 0 0</pose>
-
-	<collision name="collision">
-          <geometry>
-            <sphere>
-            	<radius>0.01</radius>
-            </sphere>
-          </geometry>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <sphere>
-            	<radius>0.01</radius>
-            </sphere>
-          </geometry>
-        </visual>
-</link>
+	</link>
 
 	<joint type="revolute" name="front_left_wheel_hinge">
 	    <pose>0 0 0 0 0 0</pose>
 	    <child>steer_left</child>
 	    <parent>f1</parent>
 	    <axis>
-	      <xyz>1 0 0</xyz>
+	      <xyz>0 0 0</xyz>
 	    </axis>
 	</joint>
 
@@ -417,7 +400,7 @@
         <child>steer_right</child>
         <parent>f1</parent>
         <axis>
-          <xyz>1 0 0</xyz>
+          <xyz>0 0 0</xyz>
         </axis>
     </joint>
 
@@ -426,7 +409,7 @@
 	    <child>front_left_wheel</child>
 	    <parent>steer_left</parent>
 	    <axis>
-	      <xyz>1 0 0</xyz>
+	      <xyz>0 0 1</xyz>
 	    </axis>
 	</joint>
 
@@ -435,7 +418,7 @@
         <child>front_right_wheel</child>
         <parent>steer_right</parent>
         <axis>
-          <xyz>1 0 0</xyz>
+          <xyz>0 0 1</xyz>
         </axis>
     </joint>
 
@@ -444,7 +427,7 @@
 	    <child>rear_left_wheel</child>
 	    <parent>f1</parent>
 	    <axis>
-	      <xyz>1 0 0</xyz>
+	      <xyz>0 0 1</xyz>
 	    </axis>
 	</joint>
 
@@ -453,7 +436,7 @@
         <child>rear_right_wheel</child>
         <parent>f1</parent>
         <axis>
-          <xyz>1 0 0</xyz>
+          <xyz>0 0 1</xyz>
         </axis>
     </joint>
 

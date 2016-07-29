@@ -1,0 +1,2 @@
+/usr/bin/ar cr libformula1_headers.a  
+/usr/bin/ranlib libformula1_headers.a

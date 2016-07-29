@@ -1,0 +1,2 @@
+/usr/bin/ar cr libf1_headers.a  
+/usr/bin/ranlib libf1_headers.a
