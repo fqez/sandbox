@@ -132,8 +132,20 @@ Formula1Control::OnUpdate(const gazebo::common::UpdateInfo & /*_info*/){
             this->driveLeftJoint->SetVelocity(0, motorspeed);
             this->driveRightJoint->SetVelocity(0, motorspeed);
 
-            this->steeringLeftJoint->SetForce(0,0.000);
-            this->steeringRightJoint->SetForce(0,0.000);
+            if(this->steeringRightJoint->GetAngle(0).Radian() >= robotMotors.wheelMax
+                    || this->steeringLeftJoint->GetAngle(0).Radian() >= robotMotors.wheelMax
+                    || this->steeringRightJoint->GetAngle(0).Radian() <= robotMotors.wheelMin
+                    || this->steeringLeftJoint->GetAngle(0).Radian() <= robotMotors.wheelMin)
+            {
+                this->steeringLeftJoint->SetForce(0,0.00000);
+                this->steeringRightJoint->SetForce(0,0.00000);
+
+            }else
+            {
+                this->steeringLeftJoint->SetForce(0,robotMotors.targetRightSteerPos);
+                this->steeringRightJoint->SetForce(0,robotMotors.targetLeftSteerPos);
+            }
+
             pthread_mutex_unlock(&mutex);
 }
 
