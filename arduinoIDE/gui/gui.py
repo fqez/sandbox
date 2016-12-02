@@ -13,7 +13,11 @@ class MainWindow(QMainWindow):
 
 
 	def initUI(self):  
-		qApp.setStyleSheet("QGroupBox {border: 1px solid gray;border-color:blue;border-radius: 5px;margin-top: 0.5em;} QGroupBox::title {subcontrol-origin: margin;left: 10px;padding: 0 3px 0 3px;}");
+
+		'''load custom stylesheet from file'''
+		sshFile="gui/style.stylesheet"
+		with open(sshFile,"r") as fh:
+			self.setStyleSheet(fh.read())
 
 		self.initMenuBar()
 
@@ -26,13 +30,29 @@ class MainWindow(QMainWindow):
 		self.mainLayout = QHBoxLayout(self.horizontalLayoutWidget)
 		self.mainLayout.setObjectName("mainLayout")
 
-		'''right and left layouts main window'''
+		'''
+		right and left layouts main window
+
+		LeftUpWidget -> Arduino Robot Control, only digital sensors/actuators and analog embeded ones
+		LeftDownWidget -> Arduino Robot Motor, only analog sensors/actuators
+
+		LeftUpWidget sensors/actuators (E = Embeded): LEDs, Light Sensors, Buzzer (E), Potentiometer (E), Keys (E)
+		LeftDownWidget sensors/actuators (E = Embeded): Motors (E), IR Sensors (E), Ultrasound, Servo 
+
+		'''
+		self.leftWidgetUp = QWidget()
+		self.leftWidgetDown = QWidget()
+		self.rightWidget = QWidget()
+
 		self.rightLayout = QVBoxLayout()
 		self.rightLayout.setObjectName("rightLayout")
-		self.leftLayout = QVBoxLayout()
-		self.leftLayout.setObjectName("leftLayout")
+		self.leftLayoutUp = QVBoxLayout()
+		self.leftLayoutUp.setObjectName("leftLayoutUp")
+		self.leftLayoutDown = QVBoxLayout()
+		self.leftLayoutDown.setObjectName("leftLayoutDown")
 
-		'''leds layout (left layout)'''
+		# ----------------------- LEFT WIDGET ARDUINO CONTROL (Up) -------------------------
+		'''leds layout (leftUp)'''
 		self.ledGroupBox = QGroupBox()
 		self.ledGroupBox.setTitle("LEDs")
 		self.ledsLayout = QGridLayout()
@@ -44,24 +64,111 @@ class MainWindow(QMainWindow):
 		self.ledsLayout.addWidget(self.button_leds,0,1)
 		self.ledGroupBox.setLayout(self.ledsLayout) 
 
-		'''buzzer layout (left layout)'''
+		'''buzzer layout (leftUp)'''
+		self.buzzerGroupBox = QGroupBox()
+		self.buzzerGroupBox.setTitle("Buzzer")
 		self.buzzerLayout = QGridLayout()
 		self.buzzerLayout.setObjectName("buzzerLayout")
-		self.label_buzzer = QLabel("Buzzer")
 		self.button_buzzer = QPushButton("Play!")
-		self.buzzerLayout.addWidget(self.label_buzzer,0,0)
-		self.buzzerLayout.addWidget(self.button_buzzer,1,0)
-		#self.ledsLayout.addItem(self.hSpacer,1,2)
+		self.buzzerLayout.addWidget(self.button_buzzer,0,0)
+		self.buzzerGroupBox.setLayout(self.buzzerLayout)
 
-		self.leftLayout.addWidget(self.ledGroupBox)
-		self.leftLayout.addLayout(self.buzzerLayout)
-		
+		'''Light sensors (LeftUp)'''
+		self.lightSensorGroupBox = QGroupBox()
+		self.lightSensorGroupBox.setTitle("Light Sensor")
+		self.lightSensorLayout = QGridLayout()
+		self.lightSensorLayout.setObjectName("lightSensorLayout")
+		self.textbox_lightSensor = QLineEdit()
+		self.textbox_lightSensor.setMaximumSize(50,40)
+		self.button_lightSensor = QPushButton("Light!")
+		self.lightSensorLayout.addWidget(self.textbox_lightSensor,0,0)
+		self.lightSensorLayout.addWidget(self.button_lightSensor,0,1)
+		self.lightSensorGroupBox.setLayout(self.lightSensorLayout)
 
-		self.mainLayout.addLayout(self.leftLayout)
+		'''Potentiometer layout (leftUp)'''
+		self.potentiometerGroupBox = QGroupBox()
+		self.potentiometerGroupBox.setTitle("Potentiometer")
+		self.potentiometerLayout = QGridLayout()
+		self.potentiometerLayout.setObjectName("potentiometerLayout")
+		self.button_potentiometer = QPushButton("Play!")
+		self.potentiometerLayout.addWidget(self.button_potentiometer,0,0)
+		self.potentiometerGroupBox.setLayout(self.potentiometerLayout)
+
+		'''Keys layout (leftUp)'''
+		self.keysGroupBox = QGroupBox()
+		self.keysGroupBox.setTitle("Keys")
+		self.keysLayout = QGridLayout()
+		self.keysLayout.setObjectName("keysLayout")
+		self.button_keys = QPushButton("Play!")
+		self.keysLayout.addWidget(self.button_keys,0,0)
+		self.keysGroupBox.setLayout(self.keysLayout)
+
+		self.leftLayoutUp.addWidget(self.ledGroupBox)
+		self.leftLayoutUp.addWidget(self.buzzerGroupBox)
+		self.leftLayoutUp.addWidget(self.lightSensorGroupBox)
+		self.leftLayoutUp.addWidget(self.potentiometerGroupBox)
+		self.leftLayoutUp.addWidget(self.keysGroupBox)
+
+		# ----------------------- END LEFT WIDGET ARDUINO CONTROL (Up) -------------------------
+
+		# ----------------------- LEFT WIDGET ARDUINO MOTOR (Down) -------------------------
+
+		'''motors layout (leftDown)'''
+		self.motorsGroupBox = QGroupBox()
+		self.motorsGroupBox.setTitle("Motors")
+		self.motorsLayout = QGridLayout()
+		self.motorsLayout.setObjectName("motorsLayout")
+		self.button_motors = QPushButton("Play!")
+		self.motorsLayout.addWidget(self.button_motors,0,0)
+		self.motorsGroupBox.setLayout(self.motorsLayout)
+
+		'''IR Sensors layout (leftDown)'''
+		self.irSensorsGroupBox = QGroupBox()
+		self.irSensorsGroupBox.setTitle("IR Sensors")
+		self.irSensorsLayout = QGridLayout()
+		self.irSensorsLayout.setObjectName("irSensorsLayout")
+		self.button_irSensors = QPushButton("Play!")
+		self.irSensorsLayout.addWidget(self.button_irSensors,0,0)
+		self.irSensorsGroupBox.setLayout(self.irSensorsLayout)
+
+		'''ultrasound sensors (LeftDown)'''
+		self.ultrasoundGroupBox = QGroupBox()
+		self.ultrasoundGroupBox.setTitle("ultrasound")
+		self.ultrasoundLayout = QGridLayout()
+		self.ultrasoundLayout.setObjectName("ultrasoundLayout")
+		self.textbox_ultrasound = QLineEdit()
+		self.textbox_ultrasound.setMaximumSize(50,40)
+		self.button_ultrasound = QPushButton("Light!")
+		self.ultrasoundLayout.addWidget(self.textbox_ultrasound,0,0)
+		self.ultrasoundLayout.addWidget(self.button_ultrasound,0,1)
+		self.ultrasoundGroupBox.setLayout(self.ultrasoundLayout)
+
+		self.leftLayoutDown.addWidget(self.motorsGroupBox)
+		self.leftLayoutDown.addWidget(self.irSensorsGroupBox)
+		self.leftLayoutDown.addWidget(self.ultrasoundGroupBox)
+
+		# ----------------------- END LEFT WIDGET ARDUINO MOTOR (Down) -------------------------
+
+		self.leftWidgetUp.setLayout(self.leftLayoutUp)
+		self.leftWidgetDown.setLayout(self.leftLayoutDown)
+		self.mainLayout.addWidget(self.leftWidgetUp)
+		self.mainLayout.addWidget(self.leftWidgetDown)
 		self.mainLayout.addLayout(self.rightLayout)
+
+		self.leftWidgetUp.setVisible(True)
+		self.leftWidgetDown.setVisible(True)
+
 
 		'''signals'''
 		self.button_leds.clicked.connect(lambda:self.ledButtonClicked())
+		self.button_buzzer.clicked.connect(lambda:self.buzzerButtonClicked())
+		self.button_lightSensor.clicked.connect(lambda:self.lightSensorButtonClicked())
+		self.button_potentiometer.clicked.connect(lambda:self.potentiometerButtonClicked())
+		self.button_keys.clicked.connect(lambda:self.keysButtonClicked())
+
+		self.button_motors.clicked.connect(lambda:self.motorsButtonClicked())
+		self.button_irSensors.clicked.connect(lambda:self.irSensorsButtonClicked())
+		self.button_ultrasound.clicked.connect(lambda:self.ultrasoundButtonClicked())
 
 		self.setCentralWidget(self.horizontalLayoutWidget)
 		self.show()
@@ -147,8 +254,62 @@ class MainWindow(QMainWindow):
  
 		self.textEdit.setText(unistr)
 
+
+	def warningDialog(self, message, message_extend):
+		msg = QMessageBox()
+		msg.setIcon(QMessageBox.Warning)
+		msg.setText(message)
+		#msg.setInformativeText()
+		msg.setWindowTitle("Error dialog")
+		msg.setDetailedText("The details are as follows:\n\n"+ message_extend)
+		msg.exec()
+
+
+		'''
+		OTHER WAY (if you want to make a choice)
+		buttonReply = QMessageBox.critical(self, "Error dialog", message_extend, QMessageBox.Ok, QMessageBox.Ok)
+		if buttonReply == QMessageBox.Yes:
+			print('Yes clicked.')
+		else:
+			print('No clicked.')'''
+
 	def newFile(self):
 		print("New file")
 
+	def checkValue(self, linedit):
+		try:
+			_val = linedit.text()
+			if _val != '':
+				_val = int(_val)
+				if _val < 0 or _val > 7:
+					self.warningDialog("Buttons out of range!", "This board has only 8 pin (0-7), please enter a valid value")
+		
+		except ValueError:
+			self.warningDialog("You entered a non-numeric value", "Please enter a valid number (0-7)")
+
 	def ledButtonClicked(self):
 		print("Leds click")
+		self.checkValue(self.textbox_leds)	
+
+	def buzzerButtonClicked(self):
+		print("Buzzer click")
+
+	def lightSensorButtonClicked(self):
+		print("Light sensor click")
+		self.checkValue(self.textbox_lightSensor)
+
+	def potentiometerButtonClicked(self):
+		print("Potentiometer click")
+
+	def keysButtonClicked(self):
+		print("Keys click")
+
+	def motorsButtonClicked(self):
+		print("Motors click")
+
+	def irSensorsButtonClicked(self):
+		print("IR sensors click")
+
+	def ultrasoundButtonClicked(self):
+		print("ultrasound click")
+		self.checkValue(self.textbox_ultrasound)
