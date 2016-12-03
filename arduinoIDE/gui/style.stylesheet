@@ -1,21 +1,90 @@
 QGroupBox {
-	background-color: lightblue;
-	border: 1px solid gray;
-	border-color:blue;
-	border-radius: 5px;
-	margin-top: 0.5em;
-	font-size: 14px;
-	font-weight: bold;
-} 
-
-QGroupBox::title {
-
-	subcontrol-origin: margin;
-	left: 10px;
-	padding: 0 3px 0 3px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 lightblue, stop: 1 white);
+    border: 2px solid gray;
+    border-radius: 5px;
+    border-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 lightblue, stop: 1 white);
+    margin-top: 1ex; /* leave space at the top for the title */
+    font-weight: bold;
 }
 
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top center; /* position at the top center */
+    padding: 0 3px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 white, stop: 1 lightblue);
+}
+
+
 QMainWindow {
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 lightgreen, stop: 1 white);
+}
+
+QLabel#ClickableLabel {
+	border: 1px solid;    
+	padding-top: 2px ;
+}
+
+QPushButton{
+	background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 green, stop: 1 lightgreen);
+    border-style: outset;
+    border-width: 2px;
+    border-radius: 10px;
+    border-color: orange;
+    font: 14px;
+    font-weight: bold;
+    padding: 4px;
+    min-width: 80px;
+}
+
+QPushButton::hover {
 	
-	background-color: lightgreen;
+	background-color:orange;	
+}
+
+QPushButton:pressed {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 orange, stop: 1 white);
+}
+
+QPushButton:flat {
+    border: none; /* no border for a flat push button */
+}
+
+QPushButton:default {
+    border-color: navy; /* make the default button prominent */
+}
+
+QLineEdit {
+    border: 2px solid gray;
+    border-radius: 10px;
+    padding: 0 8px;
+    background: yellow;
+    selection-background-color: darkgray;
+}
+
+QMenuBar {
+    background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+                                      stop:0 green, stop:1 lightgreen);
+
+}
+
+QMenuBar::item {
+    spacing: 3px; /* spacing between menu bar items */
+    padding: 1px 4px;
+    background: transparent;
+    color: black;
+    border-radius: 4px;
+}
+
+QMenuBar::item:selected { /* when selected using mouse or keyboard */
+    background: #a8a8a8;
+}
+
+QMenuBar::item:pressed {
+    background: #888888;
 }
