@@ -4,7 +4,6 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import QPixmap, QColor
 
 from gui.customLabel import ClickableLabel
-from gui.testWidget import MyWidget1
 
 class MainWindow(QMainWindow):
 
@@ -179,12 +178,9 @@ class MainWindow(QMainWindow):
 		self.mainLayout.addWidget(self.leftWidgetUp, 0)
 		self.mainLayout.addWidget(self.leftWidgetDown, 0)
 		self.mainLayout.addWidget(self.rightWidget,1)
-		self.myw = MyWidget1(self)
-		self.mainLayout.addWidget(self.myw,2)
 
 		self.leftWidgetUp.setVisible(True)
 		self.leftWidgetDown.setVisible(False)
-		self.myw.setVisible(True)
 
 		'''signals'''
 		self.button_leds.clicked.connect(lambda:self.ledButtonClicked())
