@@ -9,6 +9,8 @@ from gui.widget_leftDown import WidgetMotor
 class MainWindow(QMainWindow):
 
 	updateGUI=pyqtSignal()
+	changeWidget = pyqtSignal(int)
+
 	def __init__(self, parent=None):
 		super(MainWindow, self).__init__(parent)
 
@@ -16,6 +18,9 @@ class MainWindow(QMainWindow):
 		self.setMinimumSize(1000,700)
 		self.setMaximumSize(1000,700)
 		self.selectedBoard = -1	#-1:no selection; 0: top; 1: bottom
+
+		self.changeWidget.connect(self.switchWidget)
+
 		self.initUI()
 
 
@@ -24,23 +29,34 @@ class MainWindow(QMainWindow):
 		self.setStyleSheet(self.readStyleSheet("style.stylesheet"))
 		self.initMenuBar()
 
-		self.hSpacer = QSpacerItem(30, 30, QSizePolicy.Ignored, QSizePolicy.Ignored);
-
 		'''main layout'''
 		self.horizontalLayoutWidget = QWidget(self)
 		self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
 		self.mainLayout = QHBoxLayout(self.horizontalLayoutWidget)
 		self.mainLayout.setObjectName("mainLayout")
 
+		'''Empty left Widget'''
+		self.emptyWidget = QWidget()
+		self.emptyLayout = QVBoxLayout(self)
+		self.emptyLayout.setObjectName("emptyLayout")
+		self.selectBoardLabel = QLabel("Select a board!")
+		self.emptyLayout.addWidget(self.selectBoardLabel)
+
+
+		self.emptyWidget.setLayout(self.emptyLayout)
+
+		'''Left and right widgets'''
 		self.leftWidgetUp = WidgetControl(self)
 		self.leftWidgetDown = WidgetMotor(self)
 		self.rightWidget = RightWidget(self)
 
+		self.mainLayout.addWidget(self.emptyWidget)
 		self.mainLayout.addWidget(self.leftWidgetUp)
 		self.mainLayout.addWidget(self.leftWidgetDown)
 		self.mainLayout.addWidget(self.rightWidget)
 
-		self.leftWidgetUp.setVisible(True)
+
+		self.leftWidgetUp.setVisible(False)
 		self.leftWidgetDown.setVisible(False)
 
 		self.setCentralWidget(self.horizontalLayoutWidget)
@@ -154,13 +170,19 @@ class MainWindow(QMainWindow):
 		exampleMenu.addMenu(sub_behaviour)
 
 		
-	def switchWidget(self):
-		if self.leftWidgetUp.isVisible():
+	def switchWidget(self, n):
+		if n == 1:
 			self.leftWidgetUp.setVisible(False)
 			self.leftWidgetDown.setVisible(True)
-		else:
+			self.emptyWidget.setVisible(False)
+		elif n == 0:
 			self.leftWidgetUp.setVisible(True)
 			self.leftWidgetDown.setVisible(False)
+			self.emptyWidget.setVisible(False)
+		else:
+			self.leftWidgetUp.setVisible(False)
+			self.leftWidgetDown.setVisible(False)
+			self.emptyWidget.setVisible(True)
 
 
 	'''LoadExamples'''

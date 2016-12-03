@@ -23,9 +23,18 @@ QMainWindow {
                                       stop: 0 lightgreen, stop: 1 white);
 }
 
-QLabel#ClickableLabel {
-	border: 1px solid;    
-	padding-top: 2px ;
+QLabel#BackLabel {
+	    
+	font: 20px;
+	font-weight: bold;
+	color: red;
+}
+
+QLabel {
+	
+	font: 30px;
+	font-weight: bold;
+	color: red;
 }
 
 QPushButton{

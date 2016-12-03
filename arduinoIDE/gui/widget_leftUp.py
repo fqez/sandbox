@@ -29,6 +29,9 @@ class WidgetControl(QWidget):
 		self.leftLayoutUp = QVBoxLayout(self)
 		self.leftLayoutUp.setObjectName("leftLayoutUp")
 
+		self.vSpacer = QSpacerItem(30, 300, QSizePolicy.Ignored, QSizePolicy.Ignored);
+
+
 		# ----------------------- LEFT WIDGET ARDUINO CONTROL (Up) -------------------------
 		'''leds layout (leftUp)'''
 		self.ledGroupBox = QGroupBox()
@@ -87,6 +90,7 @@ class WidgetControl(QWidget):
 		self.leftLayoutUp.addWidget(self.lightSensorGroupBox)
 		self.leftLayoutUp.addWidget(self.potentiometerGroupBox)
 		self.leftLayoutUp.addWidget(self.keysGroupBox)
+		#self.leftLayoutUp.addItem(self.vSpacer)
 
 		# ----------------------- END LEFT WIDGET ARDUINO CONTROL (Up) -------------------------
 

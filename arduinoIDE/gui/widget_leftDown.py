@@ -2,6 +2,8 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
+from dialogs import Dialog
+
 class WidgetMotor(QWidget):
 
 	def __init__(self, parent):
@@ -83,12 +85,14 @@ class WidgetMotor(QWidget):
 		self.checkValue(self.textbox_ultrasound)
 
 	def checkValue(self, linedit):
+
+		dialog = Dialog()
 		try:
 			_val = linedit.text()
 			if _val != '':
 				_val = int(_val)
 				if _val < 0 or _val > 7:
-					self.warningDialog("Buttons out of range!", "This board has only 8 pin (0-7), please enter a valid value")
+					dialog.warningDialog("Buttons out of range!", "This board has only 8 pin (0-7), please enter a valid value")
 		
 		except ValueError:
-			self.warningDialog("You entered a non-numeric value", "Please enter a valid number (0-7)")
+			dialog.warningDialog("You entered a non-numeric value", "Please enter a valid number (0-7)")
