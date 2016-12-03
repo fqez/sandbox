@@ -19,7 +19,6 @@ class ClickableLabel(QLabel):
 
 	def mousePressEvent(self,ev):
 
-
 		self.mouseClick.emit()
 		
 	def getX(self):

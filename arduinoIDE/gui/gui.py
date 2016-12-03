@@ -2,9 +2,12 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
-from gui.widget_right import RightWidget
-from gui.widget_leftUp import WidgetControl
-from gui.widget_leftDown import WidgetMotor
+from gui.widgets.widget_right import RightWidget
+from gui.widgets.widget_leftUp import WidgetControl
+from gui.widgets.widget_leftDown import WidgetMotor
+from gui.widgets.miniwidgets import *
+
+import os
 
 class MainWindow(QMainWindow):
 
@@ -37,9 +40,10 @@ class MainWindow(QMainWindow):
 
 		'''Empty left Widget'''
 		self.emptyWidget = QWidget()
-		self.emptyLayout = QVBoxLayout(self)
+		self.emptyLayout = QVBoxLayout()
 		self.emptyLayout.setObjectName("emptyLayout")
 		self.selectBoardLabel = QLabel("Select a board!")
+		self.selectBoardLabel.setObjectName("SelectBoardLabel")
 		self.emptyLayout.addWidget(self.selectBoardLabel)
 
 
@@ -54,7 +58,6 @@ class MainWindow(QMainWindow):
 		self.mainLayout.addWidget(self.leftWidgetUp)
 		self.mainLayout.addWidget(self.leftWidgetDown)
 		self.mainLayout.addWidget(self.rightWidget)
-
 
 		self.leftWidgetUp.setVisible(False)
 		self.leftWidgetDown.setVisible(False)

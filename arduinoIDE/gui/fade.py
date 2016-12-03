@@ -5,7 +5,7 @@ import time
 
 class Fader ():
 
-	def configFade(self, target, start, end, fade):
+	def __init__(self, target, start, end, fade):
 
 		self.target = target
 		self.op = QByteArray().append("opacity")
@@ -17,15 +17,30 @@ class Fader ():
 		self.a.setStartValue(start)
 		self.a.setEndValue(end)
 		self.a.setEasingCurve(QEasingCurve.Linear)
-		self.aIn = self.a
-		self.aOut = self.a
 
-	def fadeOut(self):
+	def fade(self):
+		self.a.setDirection(QAbstractAnimation.Backward)
+		self.a.start(QPropertyAnimation.DeleteWhenStopped)
+
+	def getAnimation(self):
+		return self.a
+
+class FadeOut(Fader):
+
+	def __init__(self, target, start, end, fade):
 		
-		self.aOut.setDirection(QAbstractAnimation.Forward)
-		self.aOut.start(QPropertyAnimation.DeleteWhenStopped)
+		Fader.__init__(self, target, start, end, fade)
 
-	def fadeIn(self):
+	def fade(self):
+		self.a.setDirection(QAbstractAnimation.Forward)
+		self.a.start(QPropertyAnimation.DeleteWhenStopped)
+
+class FadeIn(Fader):
 			
-		self.aIn.setDirection(QAbstractAnimation.Backward)
-		self.aIn.start(QPropertyAnimation.DeleteWhenStopped)
+	def __init__(self, target, start, end, fade):
+		
+		Fader.__init__(self, target, start, end, fade)
+
+	def fade(self):
+		self.a.setDirection(QAbstractAnimation.Backward)
+		self.a.start(QPropertyAnimation.DeleteWhenStopped)

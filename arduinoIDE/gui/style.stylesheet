@@ -30,7 +30,7 @@ QLabel#BackLabel {
 	color: red;
 }
 
-QLabel {
+QLabel#SelectBoardLabel {
 	
 	font: 30px;
 	font-weight: bold;
