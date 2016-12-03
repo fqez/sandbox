@@ -1,6 +1,9 @@
 
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QPixmap
+
+from gui.customLabel import ClickableLabel
 
 class MainWindow(QMainWindow):
 
@@ -14,11 +17,8 @@ class MainWindow(QMainWindow):
 
 	def initUI(self):  
 
-		'''load custom stylesheet from file'''
-		sshFile="gui/style.stylesheet"
-		with open(sshFile,"r") as fh:
-			self.setStyleSheet(fh.read())
 
+		self.setStyleSheet(self.readStyleSheet("style.stylesheet"))
 		self.initMenuBar()
 
 		self.hSpacer = QSpacerItem(30, 30, QSizePolicy.Ignored, QSizePolicy.Ignored);
@@ -151,9 +151,19 @@ class MainWindow(QMainWindow):
 
 		# ---------------------------------- RIGHT WIDGET  --------------------------------------
 
-		self.buttonAux = QPushButton("Switch")
-		self.buttonAux.clicked.connect(lambda:self.switchWidget())
-		self.rightLayout.addWidget(self.buttonAux)
+		#self.buttonAux = QPushButton("Switch")
+		#self.buttonAux.clicked.connect(lambda:self.switchWidget())
+		#self.rightLayout.addWidget(self.buttonAux)
+
+		self.imageLabel = ClickableLabel(self)
+		self.imageLabel.setText("Holaaaaaaaaaaaaaaaaaa\n\n\n\n\n\n")
+		self.imageLabel.setPixmap(QPixmap("gui/images/Disabled.png").scaled(800,600,Qt.KeepAspectRatio))
+		self.imageLabel.setScaledContents(True)
+		self.imageLabel.setMouseTracking(True)
+		self.imageLabel.setGeometry(QRect(0, 0, 800, 600))
+		self.imageLabel.mousePos.connect(lambda:self.mousePose())
+
+		self.rightLayout.addWidget(self.imageLabel)
 
 
 		# ---------------------------------- END RIGHT WIDGET  --------------------------------------
@@ -181,6 +191,25 @@ class MainWindow(QMainWindow):
 
 		self.setCentralWidget(self.horizontalLayoutWidget)
 		self.show()
+
+
+	def mousePose(self):
+		x = self.imageLabel.getX()
+		y = self.imageLabel.getY()
+
+		if x > 0 and y > 0:
+			self.imageLabel.setPixmap(QPixmap("gui/images/TopBoard.png"))
+
+		#self.imageLabel.setPixmap(QPixmap("gui/images/Disabled.png"))
+
+	def readStyleSheet(self, filename):
+		'''load custom stylesheet from file'''
+		sshFile="gui/"+filename
+		sytle = ''
+		with open(sshFile,"r") as fh:
+			style = fh.read()
+
+		return style
 
 	def initMenuBar(self):
 		
