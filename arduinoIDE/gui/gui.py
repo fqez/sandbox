@@ -7,6 +7,7 @@ from gui.widgets.widget_leftUp import WidgetControl
 from gui.widgets.widget_leftDown import WidgetMotor
 from gui.widgets.miniwidgets import *
 
+
 import os
 
 class MainWindow(QMainWindow):
@@ -31,6 +32,8 @@ class MainWindow(QMainWindow):
 
 		self.setStyleSheet(self.readStyleSheet("style.stylesheet"))
 		self.initMenuBar()
+		buzzer = BuzzerWidget(self)
+		buzzer.show()
 
 		'''main layout'''
 		self.horizontalLayoutWidget = QWidget(self)

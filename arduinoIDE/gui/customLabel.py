@@ -5,7 +5,8 @@ class ClickableLabel(QLabel):
 
 
 	mousePos = pyqtSignal()
-	mouseClick = pyqtSignal()
+	mouseClickL = pyqtSignal()
+	mouseClickR = pyqtSignal()
 	def __init(self, parent):
 		QLabel.__init__(self, parent)
 		self._x = 0
@@ -19,8 +20,11 @@ class ClickableLabel(QLabel):
 
 	def mousePressEvent(self,ev):
 
-		self.mouseClick.emit()
-		
+		if ev.button() == Qt.LeftButton:
+			self.mouseClickL.emit()
+		elif ev.button() == Qt.RightButton:	
+			self.mouseClickR.emit()
+					
 	def getX(self):
 		return self._x
 

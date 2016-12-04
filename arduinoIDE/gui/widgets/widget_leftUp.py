@@ -1,6 +1,8 @@
 
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
+from gui.widgets.miniwidgets import *
+
 
 from dialogs import Dialog
 
@@ -14,6 +16,9 @@ class WidgetControl(QWidget):
 		
 	def initUI(self):
 
+		'''init mini widgets'''
+		self.buzzer = BuzzerWidget(self)
+		self.buzzer.setVisible(False)
 
 
 		'''
@@ -97,11 +102,11 @@ class WidgetControl(QWidget):
 		self.setLayout(self.leftLayoutUp)
 
 		'''signals'''
-		self.button_leds.clicked.connect(lambda:self.ledButtonClicked())
-		self.button_buzzer.clicked.connect(lambda:self.buzzerButtonClicked())
-		self.button_lightSensor.clicked.connect(lambda:self.lightSensorButtonClicked())
-		self.button_potentiometer.clicked.connect(lambda:self.potentiometerButtonClicked())
-		self.button_keys.clicked.connect(lambda:self.keysButtonClicked())
+		self.button_leds.clicked.connect(self.ledButtonClicked)
+		self.button_buzzer.clicked.connect(self.buzzerButtonClicked)
+		self.button_lightSensor.clicked.connect(self.lightSensorButtonClicked)
+		self.button_potentiometer.clicked.connect(self.potentiometerButtonClicked)
+		self.button_keys.clicked.connect(self.keysButtonClicked)
 
 	def ledButtonClicked(self):
 		print("Leds click")
@@ -109,6 +114,8 @@ class WidgetControl(QWidget):
 
 	def buzzerButtonClicked(self):
 		print("Buzzer click")
+		
+		self.buzzer.show()
 
 	def lightSensorButtonClicked(self):
 		print("Light sensor click")
