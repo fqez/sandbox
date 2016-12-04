@@ -2,7 +2,7 @@
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
-from gui.widgets.widget_right import RightWidget
+from gui.widgets.widget_right import *
 from gui.widgets.widget_leftUp import WidgetControl
 from gui.widgets.widget_leftDown import WidgetMotor
 from gui.widgets.miniwidgets import *
@@ -53,14 +53,22 @@ class MainWindow(QMainWindow):
 		self.leftWidgetUp = WidgetControl(self)
 		self.leftWidgetDown = WidgetMotor(self)
 		self.rightWidget = RightWidget(self)
+		self.rightWidgetUp = RightWidgetUp(self)
+		self.rightWidgetDown = RightWidgetDown(self)
+		#self.leftWidgetUp.setMaximumWidth(300)
 
 		self.mainLayout.addWidget(self.emptyWidget)
 		self.mainLayout.addWidget(self.leftWidgetUp)
 		self.mainLayout.addWidget(self.leftWidgetDown)
 		self.mainLayout.addWidget(self.rightWidget)
+		self.mainLayout.addWidget(self.rightWidgetUp)
+		self.mainLayout.addWidget(self.rightWidgetDown)
 
 		self.leftWidgetUp.setVisible(False)
 		self.leftWidgetDown.setVisible(False)
+		self.rightWidgetUp.setVisible(False)
+		self.rightWidgetDown.setVisible(False)
+		self.rightWidget.setVisible(True)
 
 		self.setCentralWidget(self.horizontalLayoutWidget)
 		self.show()
@@ -174,18 +182,41 @@ class MainWindow(QMainWindow):
 
 		
 	def switchWidget(self, n):
-		if n == 1:
-			self.leftWidgetUp.setVisible(False)
-			self.leftWidgetDown.setVisible(True)
-			self.emptyWidget.setVisible(False)
-		elif n == 0:
+		'''
+			n = -1 switch left and right widget to empty
+			n = 0 switch left widget to arduino control
+			n = 1 switch left widget to arduino motor
+
+			n = 2 switch right widget for arduino control
+			n = 3 switch right widget for arduino motor
+		'''
+		if n == 0:
 			self.leftWidgetUp.setVisible(True)
 			self.leftWidgetDown.setVisible(False)
 			self.emptyWidget.setVisible(False)
+		elif n == 1:
+			self.leftWidgetUp.setVisible(False)
+			self.leftWidgetDown.setVisible(True)
+			self.emptyWidget.setVisible(False)
+		elif n == 2:
+			self.rightWidgetUp.setVisible(True)
+			self.rightWidgetDown.setVisible(False)
+			self.rightWidget.setVisible(False)
+			self.emptyWidget.setVisible(False)
+		elif n == 3:
+			self.rightWidgetUp.setVisible(False)
+			self.rightWidgetDown.setVisible(True)
+			self.rightWidget.setVisible(False)
+			self.emptyWidget.setVisible(False)
 		else:
+			print("EMitido -1")
 			self.leftWidgetUp.setVisible(False)
 			self.leftWidgetDown.setVisible(False)
+			self.rightWidgetUp.setVisible(False)
+			self.rightWidgetDown.setVisible(False)
 			self.emptyWidget.setVisible(True)
+			self.rightWidget.setVisible(True)
+			print(self.rightWidget.isVisible())
 
 
 	'''LoadExamples'''
@@ -211,9 +242,6 @@ class MainWindow(QMainWindow):
 		self.setWindowTitle(tmp)
  
 		self.textEdit.setText(unistr)
-
-
-	
 
 	def newFile(self):
 		print("New file")

@@ -72,7 +72,7 @@ QLineEdit {
     border: 2px solid gray;
     border-radius: 10px;
     padding: 0 8px;
-    background: yellow;
+    background: lightyellow;
     selection-background-color: darkgray;
 }
 
