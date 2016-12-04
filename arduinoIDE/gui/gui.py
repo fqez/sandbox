@@ -7,6 +7,8 @@ from gui.widgets.widget_leftUp import WidgetControl
 from gui.widgets.widget_leftDown import WidgetMotor
 from gui.widgets.miniwidgets import *
 
+from examples import Examples
+
 
 import os
 
@@ -24,6 +26,7 @@ class MainWindow(QMainWindow):
 		self.selectedBoard = -1	#-1:no selection; 0: top; 1: bottom
 
 		self.changeWidget.connect(self.switchWidget)
+		self.examples = Examples()
 
 		self.initUI()
 
@@ -128,37 +131,73 @@ class MainWindow(QMainWindow):
 		sub_sub_ir = QMenu('IR sensors', self)
 		sub_sub_motors = QMenu('Motors', self)
 
-
 		# Examples Actions (code)
-		turn_on_led = QAction('Key Leds', self)
-		turn_on_led.setStatusTip('Turn on a specific LED pushing a key')
-		turn_on_led.triggered.connect(lambda:self.loadExample("keys_led"))
-		buzz_song = QAction('Play a Song', self)
-		buzz_song.setStatusTip('Play a song using the buzzer')
-		buzz_song.triggered.connect(lambda:self.loadExample("song_buzzer"))
+
+		# LED examples
+		l = self.examples.getExample('led')
+		for e in l:
+			action = QAction(e,self)
+			action.setData(e)
+			sub_sub_leds.addAction(action)
+		# Buzzer examples
+		l = self.examples.getExample('buz')
+		for e in l:
+			action = QAction(e,self)
+			action.setData(e)
+			sub_sub_buzzer.addAction(action)
+		# Light sensor examples
+		l = self.examples.getExample('light')
+		for e in l:
+			action = QAction(e,self)
+			action.setData(e)
+			sub_sub_light.addAction(action)
+		# Potentiometer examples
+		l = self.examples.getExample('pot')
+		for e in l:
+			action = QAction(e,self)
+			action.setData(e)
+			sub_sub_potentiometer.addAction(action)
+		# LCD examples
+		l = self.examples.getExample('lcd')
+		for e in l:
+			action = QAction(e,self)
+			action.setData(e)
+			sub_sub_lcd.addAction(action)
+		# Keys examples
+		l = self.examples.getExample('keys')
+		for e in l:
+			action = QAction(e,self)
+			action.setData(e)
+			sub_sub_keys.addAction(action)
 
 
-		ultra_distance = QAction('Read ultrasound', self)
-		ultra_distance.setStatusTip('Read values from ultrasonic sensor')
-		ultra_distance.triggered.connect(lambda:self.loadExample("ultra_distance"))
 
-		follow_line = QAction('Follow Line', self)
-		follow_line.setStatusTip('Follow a black line using IR sensors')
-		follow_line.triggered.connect(lambda:self.loadExample("follow_line"))
+		# Behaviour examples
+		l = self.examples.getExample('behaviour')
+		for e in l:
+			action = QAction(e,self)
+			action.setData(e)
+			sub_behaviour.addAction(action)
 
-		#
-		# Adding actions to submenus
-		#
 
-		# Arduino Control
-		sub_sub_leds.addAction(turn_on_led)
-		sub_sub_buzzer.addAction(buzz_song)
 
-		# Arduino Motor
-		sub_sub_ultrasound.addAction(ultra_distance)
+		'''Adding signals, each example is differente by its name, passed in action.setData'''
+		# Arduino Control examples
+		sub_sub_leds.triggered.connect(self.loadExample)
+		sub_sub_buzzer.triggered.connect(self.loadExample)
+		sub_sub_light.triggered.connect(self.loadExample)
+		sub_sub_potentiometer.triggered.connect(self.loadExample)
+		sub_sub_lcd.triggered.connect(self.loadExample)
+		sub_sub_keys.triggered.connect(self.loadExample)
 
-		# Behaviours
-		sub_behaviour.addAction(follow_line)
+		# Arduino Motors examples
+
+		# Behaviour examples
+		sub_behaviour.triggered.connect(self.loadExample)
+
+
+
+
 
 
 		#
@@ -223,8 +262,8 @@ class MainWindow(QMainWindow):
 
 
 	'''LoadExamples'''
-	def loadExample(self, example_name):	
-		print("Loading example", example_name)
+	def loadExample(self, action):	
+		print (action.data())
 
 	def openFile(self):
 		filename, _ = QFileDialog.getOpenFileName(self, 'Open File', os.getenv('HOME'))

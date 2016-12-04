@@ -80,13 +80,15 @@ class RightWidget(QWidget):
 
 class RightWidgetUp(QWidget):
 
+	loadExSig = pyqtSignal(str)
+
 	def __init__(self, parent):
 		super(RightWidgetUp, self).__init__()
 
 		self.parent = parent
 		self.setContextMenuPolicy(Qt.CustomContextMenu);
 		self.customContextMenuRequested[QPoint].connect(self.contextMenuRequested)
-	
+		self.over = ''
 		
 		self.initUI()	
 		
@@ -162,30 +164,43 @@ class RightWidgetUp(QWidget):
 
 		# TODO: Make this more clean, create a class for this kind of mapping
 		if x_p > 39 and y_p > 34.5 and x_p < 60.6 and y_p < 65.6:
+			self.over = 'lcd'
 			self.topLabel.setPixmap(QPixmap("gui/images/LCD.png").scaled(800,600,Qt.KeepAspectRatio))
 		elif x_p > 62.8 and y_p > 32.6 and x_p < 77.3 and y_p < 46:
+			self.over = 'buz'
 			self.topLabel.setPixmap(QPixmap("gui/images/Buzzer.png").scaled(800,600,Qt.KeepAspectRatio))
 		elif x_p > 63 and y_p > 47.5 and x_p < 85 and y_p < 71.6:
+			self.over = 'keys'
 			self.topLabel.setPixmap(QPixmap("gui/images/Keys.png").scaled(800,600,Qt.KeepAspectRatio))
 		elif x_p > 15.8 and y_p > 63 and x_p < 20.8 and y_p < 69.5:
+			self.over = 'pot'
 			self.topLabel.setPixmap(QPixmap("gui/images/Potentiometer.png").scaled(800,600,Qt.KeepAspectRatio))
 		elif x_p > 90.8 and y_p > 47.7 and x_p < 95.0 and y_p < 53.0 :
+			self.over = 'tk0'
 			self.topLabel.setPixmap(QPixmap("gui/images/TK0.png").scaled(800,600,Qt.KeepAspectRatio))
 		elif x_p > 77.2 and y_p > 17.5 and x_p < 83.3 and y_p < 22.5 :
+			self.over = 'tk1'
 			self.topLabel.setPixmap(QPixmap("gui/images/TK1.png").scaled(800,600,Qt.KeepAspectRatio))
 		elif x_p > 47.2 and y_p > 5.8 and x_p < 53.0 and y_p < 9.5 :
+			self.over = 'tk2'
 			self.topLabel.setPixmap(QPixmap("gui/images/TK2.png").scaled(800,600,Qt.KeepAspectRatio))
 		elif x_p > 15.5 and y_p > 17.8 and x_p < 22.8 and y_p < 22.3 :
+			self.over = 'tk3'
 			self.topLabel.setPixmap(QPixmap("gui/images/TK3.png").scaled(800,600,Qt.KeepAspectRatio))
 		elif x_p > 4.7 and y_p > 47.3 and x_p < 9.3 and y_p < 53.0 :
+			self.over = 'tk4'
 			self.topLabel.setPixmap(QPixmap("gui/images/TK4.png").scaled(800,600,Qt.KeepAspectRatio))
 		elif x_p > 17.2 and y_p > 78.0 and x_p < 22.3 and y_p < 82.7 :
+			self.over = 'tk5'
 			self.topLabel.setPixmap(QPixmap("gui/images/TK5.png").scaled(800,600,Qt.KeepAspectRatio))
 		elif x_p > 47.3 and y_p > 91.5 and x_p < 53.0 and y_p < 95.0 :
+			self.over = 'tk6'
 			self.topLabel.setPixmap(QPixmap("gui/images/TK6.png").scaled(800,600,Qt.KeepAspectRatio))
 		elif x_p > 77.0 and y_p > 78.0 and x_p < 82.7 and y_p < 82.2 :
+			self.over = 'tk7'
 			self.topLabel.setPixmap(QPixmap("gui/images/TK7.png").scaled(800,600,Qt.KeepAspectRatio))
 		else:
+			self.over = None
 			self.topLabel.setPixmap(QPixmap("gui/images/DisabledTopBoard.png").scaled(800,600,Qt.KeepAspectRatio))
 
 	def backMouseClicked(self):
@@ -194,12 +209,14 @@ class RightWidgetUp(QWidget):
 	def contextMenuRequested(self,point):
     
 		menu = QMenu()
-		    
+
+		'''
 		action1 = menu.addAction("Set Size 100x100")
 		action2 = menu.addAction("Set Size 500x500") 
 
 		action2.triggered.connect(self.slotShow500x500)
 		action1.triggered.connect(self.slotShow100x100)
+		'''
 		menu.exec_(self.mapToGlobal(point))
 		
 	def slotShow500x500(self):
