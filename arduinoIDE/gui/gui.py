@@ -245,11 +245,15 @@ class MainWindow(QMainWindow):
 			self.rightWidgetDown.setVisible(False)
 			self.rightWidget.setVisible(False)
 			self.emptyWidget.setVisible(False)
+			f = FadeIn(self.rightWidgetUp,1,0,500)
+			f.fade()
 		elif n == 3:
 			self.rightWidgetUp.setVisible(False)
 			self.rightWidgetDown.setVisible(True)
 			self.rightWidget.setVisible(False)
 			self.emptyWidget.setVisible(False)
+			f = FadeIn(self.rightWidgetDown,1,0,500)
+			f.fade()
 		else:
 			print("EMitido -1")
 			self.leftWidgetUp.setVisible(False)
@@ -258,7 +262,8 @@ class MainWindow(QMainWindow):
 			self.rightWidgetDown.setVisible(False)
 			self.emptyWidget.setVisible(True)
 			self.rightWidget.setVisible(True)
-			print(self.rightWidget.isVisible())
+			f = FadeIn(self.rightWidget,1,0,500)
+			f.fade()
 
 
 	'''LoadExamples'''

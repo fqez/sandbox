@@ -88,7 +88,7 @@ class RightWidgetUp(QWidget):
 		self.parent = parent
 		self.setContextMenuPolicy(Qt.CustomContextMenu);
 		self.customContextMenuRequested[QPoint].connect(self.contextMenuRequested)
-		self.over = ''
+		self.over = None
 		
 		self.initUI()	
 		
@@ -210,13 +210,13 @@ class RightWidgetUp(QWidget):
     
 		menu = QMenu()
 
-		'''
+		
 		action1 = menu.addAction("Set Size 100x100")
 		action2 = menu.addAction("Set Size 500x500") 
 
 		action2.triggered.connect(self.slotShow500x500)
 		action1.triggered.connect(self.slotShow100x100)
-		'''
+		
 		menu.exec_(self.mapToGlobal(point))
 		
 	def slotShow500x500(self):
@@ -234,6 +234,10 @@ class RightWidgetDown(QWidget):
 		super(RightWidgetDown, self).__init__()
 
 		self.parent = parent
+		self.setContextMenuPolicy(Qt.CustomContextMenu);
+		self.customContextMenuRequested[QPoint].connect(self.contextMenuRequested)
+		self.over = None
+
 		self.initUI()	
 		
 	def initUI(self):
@@ -270,7 +274,48 @@ class RightWidgetDown(QWidget):
 
 
 	def bMousePose(self):
-		None
+		_x = self.bottomLabel.getX()
+		_y = self.bottomLabel.getY()
+
+		print(_x,",",_y, self.bottomLabel.size())
+
+		# normalized mouse position between 0% and 100%. This way we can reescale the image, and get the same regions
+		# Te reference image size was (630x600 px). Normalized(x) = (x) * 100 / 630  Normalized(y) = (y) * 100 / 600
+		#
+		#	MotorsI -> normalized area between (11.5%,29.3%) and (45.8%,70.7%)
+		#	MotorsD -> normalized area between (65.5%,43.8%) and (94.3%,70.5%)
+		#	IR -> normalized area between (34.0%,14.5%) and (70.7%,20.2%)
+		#	B_TK1 -> normalized area between (2.0%,50.3%) and (6.2%,56.3%)
+		#	B_TK2 -> normalized area between (26.8%,5.5%) and (33.2%,8.8%)
+		#	B_TK3 -> normalized area between (98.3%,50.2%) and (102.0%,55.3%)
+		#	B_TK4 -> normalized area between (71.7%,5.5%) and (76.8%,9.0%)
+
+		#
+		x_p = _x * 100 / self.bottomLabel.size().width()
+		y_p = _y * 100 / self.bottomLabel.size().height()
+
+		# TODO: Make this more clean, create a class for this kind of mapping
+		if (x_p > 11.0 and y_p > 29.3 and x_p < 43.7 and y_p < 70.7) or (x_p > 62.4 and y_p > 43.8 and x_p < 89.8 and y_p < 70.5):
+			self.over = 'motors'
+			self.bottomLabel.setPixmap(QPixmap("gui/images/Motors.png").scaled(800,600,Qt.KeepAspectRatio))
+		elif x_p > 32.4 and y_p > 14.5 and x_p < 67.3 and y_p < 20.2 :
+			self.over = 'ir'
+			self.bottomLabel.setPixmap(QPixmap("gui/images/IR.png").scaled(800,600,Qt.KeepAspectRatio))
+		elif x_p > 1.9 and y_p > 50.3 and x_p < 5.9 and y_p < 56.3 :
+			self.over = 'b_tk1'
+			self.bottomLabel.setPixmap(QPixmap("gui/images/B_TK1.png").scaled(800,600,Qt.KeepAspectRatio))
+		elif x_p > 25.6 and y_p > 5.5 and x_p < 31.6 and y_p < 8.8 :
+			self.over = 'b_tk2'
+			self.bottomLabel.setPixmap(QPixmap("gui/images/B_TK2.png").scaled(800,600,Qt.KeepAspectRatio))
+		elif x_p > 93.7 and y_p > 50.2 and x_p < 97.1 and y_p < 55.3 :
+			self.over = 'b_tk3'
+			self.bottomLabel.setPixmap(QPixmap("gui/images/B_TK3.png").scaled(800,600,Qt.KeepAspectRatio))
+		elif x_p > 68.3 and y_p > 5.5 and x_p < 73.2 and y_p < 9.0 :
+			self.over = 'b_tk4'
+			self.bottomLabel.setPixmap(QPixmap("gui/images/B_TK4.png").scaled(800,600,Qt.KeepAspectRatio))
+		else:
+			self.over = None
+			self.bottomLabel.setPixmap(QPixmap("gui/images/DisabledBottomBoard.png").scaled(800,600,Qt.KeepAspectRatio))
 	
 	def bMouseClickedL(self):
 		None
@@ -281,6 +326,27 @@ class RightWidgetDown(QWidget):
 	def backMouseClicked(self):
 		
 		self.parent.changeWidget.emit(-1)
+
+	def contextMenuRequested(self,point):
+    
+		menu = QMenu()
+
+		
+		action1 = menu.addAction("Set Size 100x100")
+		action2 = menu.addAction("Set Size 500x500") 
+
+		action2.triggered.connect(self.slotShow500x500)
+		action1.triggered.connect(self.slotShow100x100)
+		
+		menu.exec_(self.mapToGlobal(point))
+		
+	def slotShow500x500(self):
+		self.setFixedSize(500,500)   
+		self.show()
+
+	def slotShow100x100(self):
+		self.setFixedSize(100,100)   
+		self.show()
 
 
 
