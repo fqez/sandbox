@@ -44,7 +44,7 @@
   
 from PyQt5.QtCore import QPoint, QRect, QSize, Qt
 from PyQt5.QtGui import (QBrush, QConicalGradient, QLinearGradient, QPainter,
-		QPainterPath, QPalette, QPen, QPixmap, QPolygon, QRadialGradient, QColor)
+		QPainterPath, QPalette, QPen, QPixmap, QPolygon, QRadialGradient, QColor, QTransform)
 from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QGridLayout,
 		QLabel, QSpinBox, QWidget, QPushButton )
   
@@ -169,7 +169,6 @@ class RenderArea(QWidget):
 
 		#painter.drawRect(- self.dist_radius, - self.dist_radius, self.dist_radius *2,self.dist_radius*2)
 		#painter.drawEllipse(QPoint(0, 0), self.dist_radius , self.dist_radius)
-		painter.drawLine(0,0,100,0)
 		painter.rotate(-180)	#to start painting from the left side of the circle
 		x = self.dist_radius * math.cos(0)
 		y = self.dist_radius * math.sin(0)
@@ -202,17 +201,49 @@ class RenderArea(QWidget):
 			painter.restore()
 			#end text transformation
 
+
 			painter.restore()			
 			
 		painter.restore()
 
+		
+		#drawing transitions.
+		painter.save()
+		pptv = QTransform()
+		pptv.translate(0, self.height())
+		pptv.rotate(-180, Qt.XAxis)
+		painter.setTransform(pptv)
 		s = self.machine.getStates()
 		for j in s:
 			t = j.getTransitions()
 			for i in t:
+				#get the points in the canvas
 				init = QPoint(j.getPos()[0], j.getPos()[1])
 				end = QPoint(self.machine.getState(i.getEnd()).getPos()[0], self.machine.getState(i.getEnd()).getPos()[1])
-				painter.drawLine(init, end)
+				# get the transformed ponts
+				init2 = QPoint(painter.worldTransform().map(init))
+				end2 = QPoint(painter.worldTransform().map(end))
+
+				#get the angle between states centers
+				angle = math.atan2(end2.y() - init2.y(), end2.x() - init2.x())
+
+				#get the coordinates of the starting point of the transition (it starts in the bound, not in the center)
+				newX = self.state_radius * math.cos(angle) + init2.x()
+				newY = self.state_radius * math.sin(angle) + init2.y()
+				init2.setX(newX)
+				init2.setY(newY)
+
+				#same for the end of the transition
+				angle = math.atan2(init2.y() - end2.y(), init2.x() - end2.x())
+				newX = self.state_radius * math.cos(angle) + end2.x()
+				newY = self.state_radius * math.sin(angle) + end2.y()
+				end2.setX(newX)
+				end2.setY(newY)
+
+				#painter.drawLine(init, end)
+				painter.drawLine(init2, end2)
+		
+		painter.restore()
 
 
 
