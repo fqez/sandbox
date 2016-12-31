@@ -6,6 +6,7 @@ class Machine:
 
 		self.states = []
 		self.cont = 0
+		self.t_cont = 0
 		
 		for i in range (n):
 			state = State(self.cont, '')
@@ -16,6 +17,10 @@ class Machine:
 		state = State(cont, name)
 		self.states.append(state)
 		self.cont += 1
+
+	def addTransition(self, orig, end, name):
+		self.states[orig].addTransition(self.t_cont, end, name)
+		self.t_cont += 1
 
 	def getStates(self):
 		return self.states
@@ -28,3 +33,6 @@ class Machine:
 
 	def getState(self, n_state):
 		return self.states[n_state]
+
+	def getTransition(self, orig, id):
+		return self.states[orig].getTransition(id)
