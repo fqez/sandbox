@@ -5,16 +5,20 @@ class Transition:
 		self.init = init
 		self.end = end
 		self.name = name
-		self.highlight = False
+		self.active = False
 		self.orig = [0,0]
 		self.dest = [0,0]
 		self.angle = 0
+		self.pointer = [[0.0],[0,0],[0,0]]
 
 	def setName(self, name):
 		self.name = name
 
-	def setTransitionHighlight(self):
-		self.highlight = not self.highlight
+	def getName(self):
+		return self.name
+
+	def getId(self):
+		return self.id
 
 	def getStateInit(self):
 		return self.init
@@ -30,6 +34,9 @@ class Transition:
 		self.dest[0] = x
 		self.dest[1] = y
 
+	def setPointer(self, p):
+		self.pointer = p
+
 	def setAngle(self, angle):
 		self.angle = angle
 
@@ -39,5 +46,17 @@ class Transition:
 	def getDest(self):
 		return self.dest
 
+	def getPointer(self):
+		return self.pointer
+
 	def getAngle(self):
 		return self.angle
+
+	def setActive(self, flag):
+		self.active = flag
+
+	def isActive(self):
+		return self.active
+
+	def __eq__(self, other):
+		return self.id == other.id

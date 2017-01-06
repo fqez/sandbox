@@ -45,9 +45,9 @@
 from PyQt5.QtCore import QPoint, QRect, QSize, Qt, QPointF, QRectF
 from PyQt5.QtGui import (QBrush, QConicalGradient, QLinearGradient, QPainter,
 		QPainterPath, QPalette, QPen, QPixmap, QPolygon, QRadialGradient, QColor, 
-		QTransform, QPolygonF)
+		QTransform, QPolygonF, QKeySequence, QIcon)
 from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QGridLayout,
-		QLabel, QSpinBox, QWidget, QPushButton )
+		QLabel, QSpinBox, QWidget, QPushButton, QSpacerItem, QSizePolicy )
   
 import basicdrawing_rc
 
@@ -156,24 +156,33 @@ class RenderArea(QWidget):
 			   
 #		print(points[0][0] ,'<', points[1][0], 'and', points[0][1], '>', points[1][1])
 
-
-		for i in self.machine.getStates():
-			for j in i.getTransitions():
-				print(j.id, j.orig, j.dest)
-		t = self.machine.getTransition(self.active, self.t_active)
+		t = self.machine.getTransition(self.t_active)
 		init = QPoint(t.getOrig()[0], t.getOrig()[1])
 		end = QPoint(t.getDest()[0], t.getDest()[1])
 		angle = t.getAngle()
-		for i in range(3):
+		print('processing transition', t.id, t.orig, t.dest)
+		while t.isActive():
 			self.pts = [[init.x(), init.y()], [end.x(), end.y()]]
-			while self.pts[0][0] < self.pts[1][0] and self.pts[0][1] > self.pts[1][1]:
-				print(self.pts)
-				self.pts[0][0] += (self.state_radius * math.cos(angle) * 0.1)
-				self.pts[0][1] -= (self.state_radius * math.sin(angle) * 0.1)
-				self.update()
-				QApplication.processEvents()
-				#time.sleep(0.025)
-				time.sleep(1)
+			if self.pts[0][0] <= self.pts[1][0] and self.pts[0][1] >= self.pts[1][1]:
+				while self.pts[0][0] <= self.pts[1][0] and self.pts[0][1] >= self.pts[1][1]:
+					self.sumPoint(angle)
+			elif self.pts[0][0] <= self.pts[1][0] and self.pts[0][1] <= self.pts[1][1]:
+				while self.pts[0][0] <= self.pts[1][0] and self.pts[0][1] <= self.pts[1][1]:
+					self.sumPoint(angle)
+			elif self.pts[0][0] >= self.pts[1][0] and self.pts[0][1] >= self.pts[1][1]:
+				while self.pts[0][0] >= self.pts[1][0] and self.pts[0][1] >= self.pts[1][1]:
+					self.sumPoint(angle)
+			elif self.pts[0][0] >= self.pts[1][0] and self.pts[0][1] <= self.pts[1][1]:
+				while self.pts[0][0] >= self.pts[1][0] and self.pts[0][1] <= self.pts[1][1]:
+					self.sumPoint(angle)
+					
+
+	def sumPoint(self, angle):
+		self.pts[0][0] += (self.state_radius * math.cos(angle) * 0.1)
+		self.pts[0][1] -= (self.state_radius * math.sin(angle) * 0.1)
+		self.update()
+		QApplication.processEvents()
+		time.sleep(0.025)
 
 	def paintEvent(self, event):
 		rect = QRect(10, 20, 80, 60)
@@ -211,7 +220,7 @@ class RenderArea(QWidget):
 			painter.rotate(rot)
 			painter.translate(x,y)
 
-			if self.machine.getState(h).highlight:
+			if self.machine.getState(h).isActive():
 				painter.setBrush(self.greenGradientBrush)			
 			painter.drawEllipse(QPoint(0,0), self.state_radius, self.state_radius)
 			#global position of transformed coordinates
@@ -280,86 +289,119 @@ class RenderArea(QWidget):
 				#painter.draw
 		painter.restore()
 
-
 		painter.setPen(QPen(QColor(Qt.gray), 3))
 		for i in machine.getStates():
 			for j in i.getTransitions():
 				i = QPoint(j.getOrig()[0], j.getOrig()[1])
 				o = QPoint(j.getDest()[0], j.getDest()[1])			
-				painter.drawPolyline(init, end)
+				painter.drawPolyline(i, o)
 
-
-		if self.t_active != -1:
-			t = self.machine.getTransition(self.active, self.t_active)
-			init = QPoint(t.getOrig()[0], t.getOrig()[1])
-			end = QPoint(t.getDest()[0], t.getDest()[1])
-			painter.setPen(QPen(QColor(Qt.darkGreen), 3))
-			painter.drawPolyline(init, end)
-			
-			painter.setPen(QPen(QColor(Qt.gray), 3))
-			painter.drawPolyline(self.poly(self.pts))
-
-
-			painter.setBrush(QBrush(QColor(255, 0, 0)))
-			painter.setPen(QPen(QColor(Qt.black), 1))
-
-			
-			for x, y in self.pts:
-				painter.drawEllipse(QRectF(x - 4, y - 4, 8, 8))
-
-		states = machine.getStates()
-		for i in states:
-			self.machine.setStateHighligt(i.getId(), False)
-		self.machine.setStateHighligt(self.active, True)
-
-		'''for x in range(0, self.width(), 100):
-			for y in range(0, self.height(), 100):
 				painter.save()
-				painter.translate(x, y)
-				  
-				if self.shape == RenderArea.Line:
-					painter.drawLine(rect.bottomLeft(), rect.topRight())
-				elif self.shape == RenderArea.Points:
-					painter.drawPoints(RenderArea.points)
-				elif self.shape == RenderArea.Polyline:
-					painter.drawPolyline(RenderArea.points)
-				elif self.shape == RenderArea.Polygon:
-					painter.drawPolygon(RenderArea.points)
-				elif self.shape == RenderArea.Rect:
-					painter.drawRect(rect)
-				elif self.shape == RenderArea.RoundedRect:
-					painter.drawRoundedRect(rect, 25, 25, Qt.RelativeSize)
-				elif self.shape == RenderArea.Ellipse:
-					painter.drawEllipse(rect)
-				elif self.shape == RenderArea.Arc:
-					painter.drawArc(rect, startAngle, arcLength)
-				elif self.shape == RenderArea.Chord:
-					painter.drawChord(rect, startAngle, arcLength)
-				elif self.shape == RenderArea.Pie:
-					painter.drawPie(rect, startAngle, arcLength)
-				elif self.shape == RenderArea.Path:
-					painter.drawPath(path)
-				elif self.shape == RenderArea.Text:
-					painter.drawText(rect, Qt.AlignCenter,
-							"PyQt by\nRiverbank Computing")
-				elif self.shape == RenderArea.Pixmap:
-					painter.drawPixmap(10, 10, self.pixmap)
-  
+				painter.setPen(QPen(QColor(Qt.gray), 2))
+				painter.translate(j.getDest()[0],j.getDest()[1])
+				painter.rotate(90 - j.getAngle()*180/math.pi)
+				a = QPoint(0,0)
+				b = QPoint(-5,10)
+				c = QPoint(5,10)
+
+				a1 = painter.worldTransform().map(a)
+				b1 = painter.worldTransform().map(b)
+				c1 = painter.worldTransform().map(c)
+				pointer = QPolygon([a,b,c])
+				painter.drawPolygon(pointer)
 				painter.restore()
-				'''
+
+				painter.save()
+				if j.isActive():
+
+					t = self.machine.getTransition(self.t_active)
+					init = QPoint(t.getOrig()[0], t.getOrig()[1])
+					end = QPoint(t.getDest()[0], t.getDest()[1])
+					
+					painter.setPen(QPen(QColor(Qt.green), 3))
+					painter.drawPolyline(init, end)
+					
+					
+					painter.setPen(QPen(QColor(Qt.gray), 3))
+					painter.drawPolyline(self.poly(self.pts))
+
+					painter.setBrush(QBrush(QColor(255, 0, 0)))
+					painter.setPen(QPen(QColor(Qt.red), 2))
+					pointer = QPolygon([a1,b1,c1])
+					painter.drawPolygon(pointer)
+
+					painter.setBrush(QBrush(QColor(255, 0, 0)))
+					painter.setPen(QPen(QColor(Qt.black), 1))
+				painter.restore()
+
+					
+					#Ball that follows the line
+					#for x, y in self.pts:
+						#painter.drawEllipse(QRectF(x - 4, y - 4, 8, 8))
+
+				painter.save()
+				pptv = QTransform()
+				painter.setPen(QPen(QColor(Qt.black), 3))
+				middleX = (j.getOrig()[0] + j.getDest()[0]) /2
+				middleY = (j.getOrig()[1] + j.getDest()[1]) /2
+				pptv.translate(middleX, middleY)
+				#pptv.rotate(-j.getAngle()*180/math.pi)
+				painter.setTransform(pptv)
+				font = painter.font();
+				font.setPixelSize(self.state_radius*.3);
+				painter.setFont(font);
+				rect = QRect(-self.state_radius, -self.state_radius, self.state_radius*2, self.state_radius*2)
+				name = str(j.getId())+ '. ' + j.getName()
+				painter.drawText(rect, Qt.AlignCenter, name)
+				painter.restore()
+
+
   
 		painter.setPen(self.palette().dark().color())
 		painter.setBrush(Qt.NoBrush)
 		painter.drawRect(QRect(0, 0, self.width() - 1, self.height() - 1))
 
 
-	def change(self,n):
-		print('active', n)
-		self.active = n
+	def start(self,n):
+		'''print('active', n)
+		self.active = n%3
+		self.deactivateAll()
+		self.machine.setStateActive(self.active, True)
 		#time.sleep(5)
-		self.t_active = n
-		print(self.active, self.t_active)
-		self.wave()
+		self.t_active = n%3
+		self.wave()'''
+
+		for i in range(self.n_states):
+			print('active', i)
+			self.active = i
+			self.deactivateAll()
+			self.machine.setStateActive(self.active, True)
+			self.update()
+			QApplication.processEvents()
+			time.sleep(2)
+
+			self.t_active = i
+			self.deactivateAll()
+			machine.setTransitionActive  (self.t_active, True)
+			for i in machine.getTransitions():
+				print (i.isActive())
+			self.update()
+			QApplication.processEvents()
+			self.wave()
+
+	def stop(self):
+		self.deactivateAll()
+		self.active = -1
+		self.t_active = -1
+
+
+	def deactivateAll(self):
+		states = machine.getStates()
+		for i in states:
+			self.machine.setStateActive(i.getId(), False)
+			for j in i.getTransitions():
+				j.setActive(False)
+
 
 IdRole = Qt.UserRole
   
@@ -370,17 +412,29 @@ class Window(QWidget):
 		self.renderArea = RenderArea(machine)
   
 		mainLayout = QGridLayout()
-		mainLayout.setColumnStretch(0, 1)
-		mainLayout.setColumnStretch(3, 1)
 		mainLayout.addWidget(self.renderArea, 0, 0, 1, 4)
 		mainLayout.setRowMinimumHeight(1, 6)
 
-		self.button = QPushButton()
-		self.button.setText('Push')
+		self.startButton = QPushButton()
+		self.startButton.setText('&Play')
+		self.startButton.setIcon(QIcon('./play.png'))
+		#self.startButton.setShortcut(QKeySequence(Qt.Key_P))    #same effect with & in button constructor
 
-		mainLayout.addWidget(self.button, 1, 2)
+		self.stopButton = QPushButton()
+		self.stopButton.setText('&Stop')
+		self.stopButton.setIcon(QIcon('./stop.png'))
 
-		self.button.pressed.connect(self.pressed)
+		self.infoButton = QPushButton()
+		self.infoButton.setText('&Info')
+
+		mainLayout.addWidget(self.startButton, 1, 0)
+		mainLayout.addWidget(self.stopButton, 1, 1)
+		mainLayout.addWidget(self.infoButton, 1, 3)
+
+
+		self.startButton.pressed.connect(self.startPressed)
+		self.stopButton.pressed.connect(self.stopPressed)
+		self.infoButton.pressed.connect(self.infoPressed)
 
 		self.setMinimumSize(QSize(640,480))
 				
@@ -389,10 +443,17 @@ class Window(QWidget):
 		self.setWindowTitle("Basic Drawing")
 		self.cont = 0
 
-	def pressed(self):
-		self.renderArea.change(self.cont)
+	def startPressed(self):
+		self.renderArea.start(self.cont)
 		self.cont += 1
 		print('pressed')
+
+	def stopPressed(self):
+		self.renderArea.stop()
+
+	def infoPressed(self):
+		None
+
 		  
 	def shapeChanged(self):
 		shape = self.shapeComboBox.itemData(self.shapeComboBox.currentIndex(),
@@ -446,14 +507,12 @@ if __name__ == '__main__':
 	machine.setStateName(0, 'Forward') 
 	machine.setStateName(1, 'Backward')
 	machine.setStateName(2, 'Turn')
-	machine.setStateHighligt(0, True)
 	machine.addTransition(0, 1,'close')
 	machine.addTransition(1, 2,'time')
-	#machine.addTransition(2, 0,'time2')
+	machine.addTransition(2, 0,'time2')
 
-	for i in machine.getStates():
-		for j in i.getTransitions():
-			print(j.id, j.orig, j.dest)
+	for i in machine.getTransitions():
+		print(i.id, i.orig, i.dest)
 	
 	app = QApplication(sys.argv)
 	window = Window(machine)

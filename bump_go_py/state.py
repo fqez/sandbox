@@ -6,12 +6,15 @@ class State:
 		self.id = id
 		self.name = name
 		self.transitions = []
-		self.highlight = False
+		self.active = False
+		self.x = 0
+		self.y = 0
 
 
 	def addTransition(self, id, end, name):
 		t = Transition(id, self.id, end, name)
 		self.transitions.append(t)
+		return t
 
 	def getTransitions(self):
 		return self.transitions
@@ -28,8 +31,11 @@ class State:
 	def getId(self):
 		return self.id	
 
-	def setHighlight(self, flag):
-		self.highlight = flag
+	def setActive(self, flag):
+		self.active = flag
+
+	def isActive(self):
+		return self.active
 
 	def setPos(self, x, y):
 		self.x = x
