@@ -1,0 +1,340 @@
+<html>
+  <head>
+  <script type="text/javascript" src="bundle.js"></script>
+  <script type="text/javascript" src="../src/figures.js"></script>
+  <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v4.1.1/dist/aframe-extras.min.js"></script>
+  <script src="https://rawgit.com/mayognaise/aframe-mouse-cursor-component/master/dist/aframe-mouse-cursor-component.min.js"></script>
+  <!-- <script type="text/javascript" src="https://aframe.io/releases/0.6.0/aframe.min.js"> -->
+  </script>
+</head>
+  <body>
+    <a-scene cursor="rayOrigin: mouse">
+      <a-assets>
+          <!-- <a-asset-item id="f1" src="ferrari/scene.gltf"></a-asset-item> -->
+          <!-- <a-asset-item id="car" src="auto/scene.gltf"></a-asset-item> -->
+          <a-asset-item id="car-mtl" src="Redbull/Car.mtl"></a-asset-item>
+          <a-asset-item id="car" src="Redbull/Car.obj"></a-asset-item>
+          <a-asset-item id="car2-mtl" src="Mclaren/Car.mtl"></a-asset-item>
+          <a-asset-item id="car2" src="Mclaren/Car.obj"></a-asset-item>
+          <a-asset-item id="car3-mtl" src="Renault/Car.mtl"></a-asset-item>
+          <a-asset-item id="car3" src="Renault/Car.obj"></a-asset-item>
+          <a-asset-item id="wheel" src="Redbull/Wheel.obj"></a-asset-item>
+          <a-asset-item id="wheel-mtl" src="Redbull/Wheel.mtl"></a-asset-item>
+          <a-asset-item id="wh-mtl" src="Redbull/wh.mtl"></a-asset-item>
+          <a-asset-item id="wh" src="Redbull/wh.obj"></a-asset-item>
+          <a-asset-item id="wh2-mtl" src="Redbull/wh2.mtl"></a-asset-item>
+          <a-asset-item id="wh2" src="Redbull/wh2.obj"></a-asset-item>
+          <a-asset-item id="road" src="road_segment/scene.gltf"></a-asset-item>
+          <a-asset-item id="laser" src="hokuyo.dae"></a-asset-item>
+          <img id="fibra" src="fibra.jpg">
+          <img id="frame" src="frame2.png">
+          <img id="track" src="track3.png">
+      </a-assets>
+
+      <!-- <a-entity position="0 2 0" gltf-model="#f1" scale="1 1 1"></a-entity> -->
+
+      <a-entity position="-10 0 2" rotation="0 0 0" obj-model="obj: #car2; mtl: #car2-mtl" scale="1 1 1">
+      </a-entity>
+      <a-entity position="-7 0 -2.2" rotation="0 0 0" obj-model="obj: #car3; mtl: #car3-mtl" scale="1 1 1">
+      </a-entity>
+
+      <a-plane position="0 0 0" rotation="-90 0 0" width="30" height="20" repeat="50 50" src="#fibra"></a-plane>
+      
+      <a-curvedimage position="0.5 1.5 0" src="#track" height="3" radius="10" theta-length="120"
+      rotation="0 30 0" scale="1 1 1"></a-curvedimage>
+
+      <!-- Road -->
+      <a-entity position="0 -0.3 0" rotation="0 90 0" gltf-model="#road" scale="0.05 0.08 0.075"></a-entity>
+
+      <!-- Car chasis -->
+      <a-entity id="car_chassis" position="0 0 0" rotation="0 0 0" obj-model="obj: #car; mtl: #car-mtl" scale="1 1 1">
+      </a-entity>
+      <a-entity id="car_chassis-hover" position="0 0 0" rotation="0 0 0" obj-model="obj: #car;" 
+                 visible="false" material="color: green; opacity: 0.30" scale="1 1 1">
+      </a-entity>
+
+      <!-- Front left wheel -->
+      <a-entity position="1.4653 0.32015 -0.77595" rotation="0 0 0" obj-model="obj: #wh; mtl: #wh-mtl" scale="1 1 1">
+        <a-animation attribute="rotation" dur="1000" fill="forwards"
+                     to="0 0 99999999" repeat="indefinite">
+        </a-animation>
+      </a-entity>
+
+      <!-- Front right wheel -->
+      <a-entity position="1.4653 0.32015 0.77595" rotation="0 180 0" obj-model="obj: #wh; mtl: #wh-mtl" scale="1 1 1">
+          <a-animation attribute="rotation" dur="1000" fill="forwards"
+                       to="0 180 99999999" repeat="indefinite">
+          </a-animation>
+      </a-entity>
+
+        <!-- Rear left wheel -->
+      <a-entity position="-1.8230 0.32015 -0.77595" rotation="0 0 0" obj-model="obj: #wh2; mtl: #wh2-mtl" scale="1 1 1">
+          <a-animation attribute="rotation" dur="1000" fill="forwards"
+                       to="0 0 99999999" repeat="indefinite">
+          </a-animation>
+      </a-entity>
+
+        <!-- Rear right wheel -->
+      <a-entity position="-1.8230 0.32015 0.77595" rotation="0 180 0" obj-model="obj: #wh2; mtl: #wh2-mtl" scale="1 1 1">
+          <a-animation attribute="rotation" dur="1000" fill="forwards"
+                       to="0 180 99999999" repeat="indefinite">
+          </a-animation>
+      </a-entity>
+
+      <!-- Laser -->
+      <a-entity id="laser1" position="2.55 0.431 0" collada-model="#laser"></a-entity>
+
+
+      <!-- <a-entity position="0 0 0" gltf-model="#car"
+                scale="0.01 0.01 0.01">
+      </a-entity> -->
+
+      <!-- <a-entity position="0 0 0" rotation="0 180 0" gltf-model="#f1" 
+                scale="1 1 1 ">
+      </a-entity> -->
+
+        <!-- <a-entity line="start: 0 0 0; end: 5 0 0; color: red"
+          line__2="start: 0 0 0; end: 0 5 0; color: green"
+          line__3="start: 0 0 0; end: 0 0 5; color: blue"></a-entity> -->
+
+      <a-sky color="#191919"></a-sky>
+      <a-light type="ambient" color="white"></a-light>
+      <a-light type="point" intensity="1" position="2 5 -6"></a-light>
+      <a-light type="point" intensity="1" position="-2 2 2"></a-light>
+
+      <!-- <a-entity position="1 2 4" rotation="0  0 0">
+        <a-camera active="false">
+            <a-entity cursor="fuse: true; fuseTimeout: 500"
+              position="0 0 -1"
+              geometry="primitive: circle; radius: 0.005;"
+              material="color: green; shader: flat">
+            </a-entity>
+        </a-camera>
+      </a-entity> -->
+
+      <a-entity id="rig"
+        movement-controls="fly: true; speed: 0.3">
+        <a-entity camera position="1 2 4" look-controls mouse-cursor>
+          
+          <!-- <a-entity cursor="fuse: true; fuseTimeout: 500"
+              position="0 0 -0.1"
+              geometry="primitive: circle; radius: 0.0005;"
+              material="color: green; shader: flat">
+            </a-entity> -->
+            
+            <!-- <a-plane position="-1.3 0.5 -1" scale="0.2 0.2 0.2" rotation="0 0 0" width="3" height="2" repeat="1 1" src="#frame"></a-plane> -->
+            <a-text value="Stats" color="white" align="center"
+                 position="-1.3 0.57 -1" rotation="0 0 0" scale="0.3 0.3 0.3" font="Roboto-msdf.json"></a-text>
+            <a-text id="track" value="Montecarlo track" color="white" align="center"
+                 position="-1.3 0.54 -1" rotation="0 0 0" scale="0.2 0.2 0.2" font="Roboto-msdf.json"></a-text>
+            <a-entity line="start: -1.5 0.54 -1; end: -1.1 0.54 -1" color="green"></a-entity>
+            <a-text value="Current V:\n Current W: \n Lap Time:" color="white" align="left"
+                    position="-1.55 0.4 -1" rotation="0 0 0" scale="0.2 0.2 0.2" font="Roboto-msdf.json">
+            </a-text>
+            <a-text id="vel" value="0 m/s \n 0 rad/s \n 00:00.000" color="green" align="left"
+                    position="-1.30 0.4 -1" rotation="0 0 0" scale="0.2 0.2 0.2" font="Roboto-msdf.json">
+                <!-- <a-animation property="value"  
+                              to="0 m/s \n 0 rad/s \n 00:00.000" repeat="indefinite">
+                </a-animation> -->
+            </a-text>
+            </a-entity>
+      </a-entity>
+
+      <!-- <a-plane position="0 1.5 -4" rotation="0 0 0" width="5" height="3" repeat="1 1" src="#frame"></a-plane>
+      <a-text id="stats" value="Statistics" color="white" align="center"
+         position="0 2.1 -4" rotation="0 0 0" scale="2 2 2" font="Roboto-msdf.json"></a-text>
+      <a-text id="vel" value="Current vel: 0m/s" color="red" align="left"
+         position="-2 1.8 -4" rotation="0 0 0" scale="1 1 1" font="Roboto-msdf.json"></a-text> -->
+
+      <a-entity id="linLaser" visible="false" line="start: 2.487 0.431 0; end: 2.7 1.2 0; color: #07f8f1"
+                line__2="start: 2.7 1.2 0; end: 3 1.2 0; color: #07f8f1"></a-entity>
+
+      <a-entity id="linCar" visible="false" line="start: 0 0.5 0; end: 0.5 2 0; color: #07f8f1"
+                line__2="start: 0.5 2 0; end: 1 2 0; color: #07f8f1"></a-entity>
+
+
+      <!-- LASER -->
+      <a-entity id="line0" line="start: 2.487 0.431 0; end: -1.2246467991473533e-15  0.431  -10.0; color: blue"></a-entity>
+<a-entity id="line1" line="start: 2.487 0.431 0; end: 0.17452406437283635  0.431  -9.998476951563912 ; color: blue"></a-entity>
+<a-entity id="line2" line="start: 2.487 0.431 0; end: 0.348994967025009  0.431  -9.993908270190957 ; color: blue"></a-entity>
+<a-entity id="line3" line="start: 2.487 0.431 0; end: 0.5233595624294356  0.431  -9.986295347545738 ; color: blue"></a-entity>
+<a-entity id="line4" line="start: 2.487 0.431 0; end: 0.6975647374412528  0.431  -9.975640502598242 ; color: blue"></a-entity>
+<a-entity id="line5" line="start: 2.487 0.431 0; end: 0.8715574274765794  0.431  -9.961946980917455 ; color: blue"></a-entity>
+<a-entity id="line6" line="start: 2.487 0.431 0; end: 1.045284632676535  0.431  -9.945218953682733 ; color: blue"></a-entity>
+<a-entity id="line7" line="start: 2.487 0.431 0; end: 1.218693434051473  0.431  -9.925461516413222 ; color: blue"></a-entity>
+<a-entity id="line8" line="start: 2.487 0.431 0; end: 1.3917310096006552  0.431  -9.902680687415703 ; color: blue"></a-entity>
+<a-entity id="line9" line="start: 2.487 0.431 0; end: 1.5643446504023073  0.431  -9.876883405951379 ; color: blue"></a-entity>
+<a-entity id="line10" line="start: 2.487 0.431 0; end: 1.7364817766693048  0.431  -9.84807753012208 ; color: blue"></a-entity>
+<a-entity id="line11" line="start: 2.487 0.431 0; end: 1.9080899537654472  0.431  -9.81627183447664 ; color: blue"></a-entity>
+<a-entity id="line12" line="start: 2.487 0.431 0; end: 2.0791169081775953  0.431  -9.781476007338055 ; color: blue"></a-entity>
+<a-entity id="line13" line="start: 2.487 0.431 0; end: 2.2495105434386495  0.431  -9.743700647852352 ; color: blue"></a-entity>
+<a-entity id="line14" line="start: 2.487 0.431 0; end: 2.419218955996675  0.431  -9.702957262759965 ; color: blue"></a-entity>
+<a-entity id="line15" line="start: 2.487 0.431 0; end: 2.588190451025208  0.431  -9.659258262890683 ; color: blue"></a-entity>
+<a-entity id="line16" line="start: 2.487 0.431 0; end: 2.75637355816999  0.431  -9.612616959383189 ; color: blue"></a-entity>
+<a-entity id="line17" line="start: 2.487 0.431 0; end: 2.9237170472273677  0.431  -9.563047559630354 ; color: blue"></a-entity>
+<a-entity id="line18" line="start: 2.487 0.431 0; end: 3.0901699437494727  0.431  -9.510565162951536 ; color: blue"></a-entity>
+<a-entity id="line19" line="start: 2.487 0.431 0; end: 3.2556815445715674  0.431  -9.455185755993167 ; color: blue"></a-entity>
+<a-entity id="line20" line="start: 2.487 0.431 0; end: 3.4202014332566866  0.431  -9.396926207859085 ; color: blue"></a-entity>
+<a-entity id="line21" line="start: 2.487 0.431 0; end: 3.5836794954530045  0.431  -9.335804264972017 ; color: blue"></a-entity>
+<a-entity id="line22" line="start: 2.487 0.431 0; end: 3.74606593415912  0.431  -9.271838545667874 ; color: blue"></a-entity>
+<a-entity id="line23" line="start: 2.487 0.431 0; end: 3.9073112848927356  0.431  -9.205048534524403 ; color: blue"></a-entity>
+<a-entity id="line24" line="start: 2.487 0.431 0; end: 4.067366430758002  0.431  -9.135454576426008 ; color: blue"></a-entity>
+<a-entity id="line25" line="start: 2.487 0.431 0; end: 4.226182617406993  0.431  -9.0630778703665 ; color: blue"></a-entity>
+<a-entity id="line26" line="start: 2.487 0.431 0; end: 4.383711467890775  0.431  -8.98794046299167 ; color: blue"></a-entity>
+<a-entity id="line27" line="start: 2.487 0.431 0; end: 4.539904997395467  0.431  -8.910065241883679 ; color: blue"></a-entity>
+<a-entity id="line28" line="start: 2.487 0.431 0; end: 4.694715627858908  0.431  -8.829475928589268 ; color: blue"></a-entity>
+<a-entity id="line29" line="start: 2.487 0.431 0; end: 4.84809620246337  0.431  -8.746197071393958 ; color: blue"></a-entity>
+<a-entity id="line30" line="start: 2.487 0.431 0; end: 5.000000000000001  0.431  -8.660254037844386 ; color: blue"></a-entity>
+<a-entity id="line31" line="start: 2.487 0.431 0; end: 5.150380749100542  0.431  -8.571673007021124 ; color: blue"></a-entity>
+<a-entity id="line32" line="start: 2.487 0.431 0; end: 5.299192642332048  0.431  -8.480480961564261 ; color: blue"></a-entity>
+<a-entity id="line33" line="start: 2.487 0.431 0; end: 5.446390350150271  0.431  -8.386705679454241 ; color: blue"></a-entity>
+<a-entity id="line34" line="start: 2.487 0.431 0; end: 5.591929034707467  0.431  -8.290375725550417 ; color: blue"></a-entity>
+<a-entity id="line35" line="start: 2.487 0.431 0; end: 5.735764363510461  0.431  -8.191520442889917 ; color: blue"></a-entity>
+<a-entity id="line36" line="start: 2.487 0.431 0; end: 5.87785252292473  0.431  -8.090169943749475 ; color: blue"></a-entity>
+<a-entity id="line37" line="start: 2.487 0.431 0; end: 6.018150231520484  0.431  -7.986355100472928 ; color: blue"></a-entity>
+<a-entity id="line38" line="start: 2.487 0.431 0; end: 6.156614753256582  0.431  -7.88010753606722 ; color: blue"></a-entity>
+<a-entity id="line39" line="start: 2.487 0.431 0; end: 6.293203910498376  0.431  -7.771459614569708 ; color: blue"></a-entity>
+<a-entity id="line40" line="start: 2.487 0.431 0; end: 6.4278760968653925  0.431  -7.66044443118978 ; color: blue"></a-entity>
+<a-entity id="line41" line="start: 2.487 0.431 0; end: 6.56059028990507  0.431  -7.547095802227721 ; color: blue"></a-entity>
+<a-entity id="line42" line="start: 2.487 0.431 0; end: 6.691306063588582  0.431  -7.431448254773942 ; color: blue"></a-entity>
+<a-entity id="line43" line="start: 2.487 0.431 0; end: 6.819983600624983  0.431  -7.313537016191706 ; color: blue"></a-entity>
+<a-entity id="line44" line="start: 2.487 0.431 0; end: 6.9465837045899725  0.431  -7.193398003386511 ; color: blue"></a-entity>
+<a-entity id="line45" line="start: 2.487 0.431 0; end: 7.071067811865475  0.431  -7.071067811865477 ; color: blue"></a-entity>
+<a-entity id="line46" line="start: 2.487 0.431 0; end: 7.193398003386512  0.431  -6.9465837045899725 ; color: blue"></a-entity>
+<a-entity id="line47" line="start: 2.487 0.431 0; end: 7.313537016191704  0.431  -6.819983600624986 ; color: blue"></a-entity>
+<a-entity id="line48" line="start: 2.487 0.431 0; end: 7.431448254773944  0.431  -6.6913060635885815 ; color: blue"></a-entity>
+<a-entity id="line49" line="start: 2.487 0.431 0; end: 7.54709580222772  0.431  -6.560590289905073 ; color: blue"></a-entity>
+<a-entity id="line50" line="start: 2.487 0.431 0; end: 7.660444431189779  0.431  -6.427876096865395 ; color: blue"></a-entity>
+<a-entity id="line51" line="start: 2.487 0.431 0; end: 7.7714596145697055  0.431  -6.293203910498378 ; color: blue"></a-entity>
+<a-entity id="line52" line="start: 2.487 0.431 0; end: 7.8801075360672215  0.431  -6.156614753256581 ; color: blue"></a-entity>
+<a-entity id="line53" line="start: 2.487 0.431 0; end: 7.986355100472928  0.431  -6.018150231520483 ; color: blue"></a-entity>
+<a-entity id="line54" line="start: 2.487 0.431 0; end: 8.090169943749473  0.431  -5.877852522924733 ; color: blue"></a-entity>
+<a-entity id="line55" line="start: 2.487 0.431 0; end: 8.191520442889916  0.431  -5.735764363510464 ; color: blue"></a-entity>
+<a-entity id="line56" line="start: 2.487 0.431 0; end: 8.290375725550419  0.431  -5.591929034707466 ; color: blue"></a-entity>
+<a-entity id="line57" line="start: 2.487 0.431 0; end: 8.386705679454241  0.431  -5.44639035015027 ; color: blue"></a-entity>
+<a-entity id="line58" line="start: 2.487 0.431 0; end: 8.48048096156426  0.431  -5.29919264233205 ; color: blue"></a-entity>
+<a-entity id="line59" line="start: 2.487 0.431 0; end: 8.571673007021122  0.431  -5.1503807491005436 ; color: blue"></a-entity>
+<a-entity id="line60" line="start: 2.487 0.431 0; end: 8.660254037844386  0.431  -5.000000000000004 ; color: blue"></a-entity>
+<a-entity id="line61" line="start: 2.487 0.431 0; end: 8.746197071393958  0.431  -4.848096202463369 ; color: blue"></a-entity>
+<a-entity id="line62" line="start: 2.487 0.431 0; end: 8.82947592858927  0.431  -4.6947156278589075 ; color: blue"></a-entity>
+<a-entity id="line63" line="start: 2.487 0.431 0; end: 8.910065241883679  0.431  -4.539904997395469 ; color: blue"></a-entity>
+<a-entity id="line64" line="start: 2.487 0.431 0; end: 8.987940462991668  0.431  -4.383711467890778 ; color: blue"></a-entity>
+<a-entity id="line65" line="start: 2.487 0.431 0; end: 9.063077870366502  0.431  -4.226182617406992 ; color: blue"></a-entity>
+<a-entity id="line66" line="start: 2.487 0.431 0; end: 9.13545457642601  0.431  -4.067366430758001 ; color: blue"></a-entity>
+<a-entity id="line67" line="start: 2.487 0.431 0; end: 9.205048534524403  0.431  -3.9073112848927383 ; color: blue"></a-entity>
+<a-entity id="line68" line="start: 2.487 0.431 0; end: 9.271838545667872  0.431  -3.746065934159123 ; color: blue"></a-entity>
+<a-entity id="line69" line="start: 2.487 0.431 0; end: 9.335804264972015  0.431  -3.583679495453007 ; color: blue"></a-entity>
+<a-entity id="line70" line="start: 2.487 0.431 0; end: 9.396926207859085  0.431  -3.4202014332566852 ; color: blue"></a-entity>
+<a-entity id="line71" line="start: 2.487 0.431 0; end: 9.455185755993169  0.431  -3.2556815445715666 ; color: blue"></a-entity>
+<a-entity id="line72" line="start: 2.487 0.431 0; end: 9.510565162951535  0.431  -3.0901699437494754 ; color: blue"></a-entity>
+<a-entity id="line73" line="start: 2.487 0.431 0; end: 9.563047559630354  0.431  -2.9237170472273712 ; color: blue"></a-entity>
+<a-entity id="line74" line="start: 2.487 0.431 0; end: 9.61261695938319  0.431  -2.756373558169989 ; color: blue"></a-entity>
+<a-entity id="line75" line="start: 2.487 0.431 0; end: 9.659258262890683  0.431  -2.5881904510252065 ; color: blue"></a-entity>
+<a-entity id="line76" line="start: 2.487 0.431 0; end: 9.702957262759965  0.431  -2.4192189559966777 ; color: blue"></a-entity>
+<a-entity id="line77" line="start: 2.487 0.431 0; end: 9.743700647852352  0.431  -2.2495105434386526 ; color: blue"></a-entity>
+<a-entity id="line78" line="start: 2.487 0.431 0; end: 9.781476007338055  0.431  -2.079116908177598 ; color: blue"></a-entity>
+<a-entity id="line79" line="start: 2.487 0.431 0; end: 9.81627183447664  0.431  -1.908089953765446 ; color: blue"></a-entity>
+<a-entity id="line80" line="start: 2.487 0.431 0; end: 9.84807753012208  0.431  -1.7364817766693033 ; color: blue"></a-entity>
+<a-entity id="line81" line="start: 2.487 0.431 0; end: 9.876883405951377  0.431  -1.5643446504023104 ; color: blue"></a-entity>
+<a-entity id="line82" line="start: 2.487 0.431 0; end: 9.902680687415703  0.431  -1.3917310096006583 ; color: blue"></a-entity>
+<a-entity id="line83" line="start: 2.487 0.431 0; end: 9.925461516413222  0.431  -1.2186934340514717 ; color: blue"></a-entity>
+<a-entity id="line84" line="start: 2.487 0.431 0; end: 9.945218953682733  0.431  -1.0452846326765335 ; color: blue"></a-entity>
+<a-entity id="line85" line="start: 2.487 0.431 0; end: 9.961946980917455  0.431  -0.8715574274765825 ; color: blue"></a-entity>
+<a-entity id="line86" line="start: 2.487 0.431 0; end: 9.975640502598242  0.431  -0.6975647374412558 ; color: blue"></a-entity>
+<a-entity id="line87" line="start: 2.487 0.431 0; end: 9.986295347545738  0.431  -0.523359562429443 ; color: blue"></a-entity>
+<a-entity id="line88" line="start: 2.487 0.431 0; end: 9.993908270190957  0.431  -0.3489949670250076 ; color: blue"></a-entity>
+<a-entity id="line89" line="start: 2.487 0.431 0; end: 9.998476951563912  0.431  -0.17452406437283496 ; color: blue"></a-entity>
+<a-entity id="line90" line="start: 2.487 0.431 0; end: 10.0  0.431  -1.8369701987210296e-15 ; color: blue"></a-entity>
+<a-entity id="line91" line="start: 2.487 0.431 0; end: 9.998476951563912  0.431  0.1745240643728313 ; color: blue"></a-entity>
+<a-entity id="line92" line="start: 2.487 0.431 0; end: 9.993908270190957  0.431  0.3489949670250128 ; color: blue"></a-entity>
+<a-entity id="line93" line="start: 2.487 0.431 0; end: 9.986295347545738  0.431  0.5233595624294395 ; color: blue"></a-entity>
+<a-entity id="line94" line="start: 2.487 0.431 0; end: 9.975640502598242  0.431  0.6975647374412521 ; color: blue"></a-entity>
+<a-entity id="line95" line="start: 2.487 0.431 0; end: 9.961946980917455  0.431  0.8715574274765789 ; color: blue"></a-entity>
+<a-entity id="line96" line="start: 2.487 0.431 0; end: 9.945218953682733  0.431  1.04528463267653 ; color: blue"></a-entity>
+<a-entity id="line97" line="start: 2.487 0.431 0; end: 9.92546151641322  0.431  1.2186934340514768 ; color: blue"></a-entity>
+<a-entity id="line98" line="start: 2.487 0.431 0; end: 9.902680687415703  0.431  1.3917310096006545 ; color: blue"></a-entity>
+<a-entity id="line99" line="start: 2.487 0.431 0; end: 9.876883405951379  0.431  1.5643446504023069 ; color: blue"></a-entity>
+<a-entity id="line100" line="start: 2.487 0.431 0; end: 9.848077530122081  0.431  1.7364817766692997 ; color: blue"></a-entity>
+<a-entity id="line101" line="start: 2.487 0.431 0; end: 9.81627183447664  0.431  1.908089953765451 ; color: blue"></a-entity>
+<a-entity id="line102" line="start: 2.487 0.431 0; end: 9.781476007338055  0.431  2.0791169081775944 ; color: blue"></a-entity>
+<a-entity id="line103" line="start: 2.487 0.431 0; end: 9.743700647852352  0.431  2.249510543438649 ; color: blue"></a-entity>
+<a-entity id="line104" line="start: 2.487 0.431 0; end: 9.702957262759966  0.431  2.419218955996674 ; color: blue"></a-entity>
+<a-entity id="line105" line="start: 2.487 0.431 0; end: 9.659258262890685  0.431  2.588190451025203 ; color: blue"></a-entity>
+<a-entity id="line106" line="start: 2.487 0.431 0; end: 9.612616959383187  0.431  2.7563735581699937 ; color: blue"></a-entity>
+<a-entity id="line107" line="start: 2.487 0.431 0; end: 9.563047559630354  0.431  2.9237170472273672 ; color: blue"></a-entity>
+<a-entity id="line108" line="start: 2.487 0.431 0; end: 9.510565162951536  0.431  3.0901699437494723 ; color: blue"></a-entity>
+<a-entity id="line109" line="start: 2.487 0.431 0; end: 9.45518575599317  0.431  3.255681544571563 ; color: blue"></a-entity>
+<a-entity id="line110" line="start: 2.487 0.431 0; end: 9.396926207859083  0.431  3.4202014332566897 ; color: blue"></a-entity>
+<a-entity id="line111" line="start: 2.487 0.431 0; end: 9.335804264972017  0.431  3.583679495453004 ; color: blue"></a-entity>
+<a-entity id="line112" line="start: 2.487 0.431 0; end: 9.271838545667874  0.431  3.7460659341591196 ; color: blue"></a-entity>
+<a-entity id="line113" line="start: 2.487 0.431 0; end: 9.205048534524405  0.431  3.907311284892735 ; color: blue"></a-entity>
+<a-entity id="line114" line="start: 2.487 0.431 0; end: 9.13545457642601  0.431  4.067366430757998 ; color: blue"></a-entity>
+<a-entity id="line115" line="start: 2.487 0.431 0; end: 9.063077870366499  0.431  4.226182617406996 ; color: blue"></a-entity>
+<a-entity id="line116" line="start: 2.487 0.431 0; end: 8.98794046299167  0.431  4.383711467890774 ; color: blue"></a-entity>
+<a-entity id="line117" line="start: 2.487 0.431 0; end: 8.91006524188368  0.431  4.539904997395467 ; color: blue"></a-entity>
+<a-entity id="line118" line="start: 2.487 0.431 0; end: 8.829475928589272  0.431  4.694715627858904 ; color: blue"></a-entity>
+<a-entity id="line119" line="start: 2.487 0.431 0; end: 8.746197071393956  0.431  4.848096202463373 ; color: blue"></a-entity>
+<a-entity id="line120" line="start: 2.487 0.431 0; end: 8.660254037844386  0.431  5.000000000000001 ; color: blue"></a-entity>
+<a-entity id="line121" line="start: 2.487 0.431 0; end: 8.571673007021124  0.431  5.150380749100542 ; color: blue"></a-entity>
+<a-entity id="line122" line="start: 2.487 0.431 0; end: 8.480480961564261  0.431  5.299192642332047 ; color: blue"></a-entity>
+<a-entity id="line123" line="start: 2.487 0.431 0; end: 8.386705679454243  0.431  5.446390350150266 ; color: blue"></a-entity>
+<a-entity id="line124" line="start: 2.487 0.431 0; end: 8.290375725550415  0.431  5.59192903470747 ; color: blue"></a-entity>
+<a-entity id="line125" line="start: 2.487 0.431 0; end: 8.191520442889917  0.431  5.7357643635104605 ; color: blue"></a-entity>
+<a-entity id="line126" line="start: 2.487 0.431 0; end: 8.090169943749476  0.431  5.877852522924729 ; color: blue"></a-entity>
+<a-entity id="line127" line="start: 2.487 0.431 0; end: 7.986355100472931  0.431  6.01815023152048 ; color: blue"></a-entity>
+<a-entity id="line128" line="start: 2.487 0.431 0; end: 7.880107536067218  0.431  6.156614753256585 ; color: blue"></a-entity>
+<a-entity id="line129" line="start: 2.487 0.431 0; end: 7.771459614569708  0.431  6.2932039104983755 ; color: blue"></a-entity>
+<a-entity id="line130" line="start: 2.487 0.431 0; end: 7.660444431189781  0.431  6.4278760968653925 ; color: blue"></a-entity>
+<a-entity id="line131" line="start: 2.487 0.431 0; end: 7.547095802227722  0.431  6.56059028990507 ; color: blue"></a-entity>
+<a-entity id="line132" line="start: 2.487 0.431 0; end: 7.4314482547739455  0.431  6.691306063588578 ; color: blue"></a-entity>
+<a-entity id="line133" line="start: 2.487 0.431 0; end: 7.313537016191703  0.431  6.819983600624986 ; color: blue"></a-entity>
+<a-entity id="line134" line="start: 2.487 0.431 0; end: 7.193398003386511  0.431  6.9465837045899725 ; color: blue"></a-entity>
+<a-entity id="line135" line="start: 2.487 0.431 0; end: 7.071067811865477  0.431  7.071067811865474 ; color: blue"></a-entity>
+<a-entity id="line136" line="start: 2.487 0.431 0; end: 6.946583704589976  0.431  7.193398003386509 ; color: blue"></a-entity>
+<a-entity id="line137" line="start: 2.487 0.431 0; end: 6.819983600624982  0.431  7.313537016191707 ; color: blue"></a-entity>
+<a-entity id="line138" line="start: 2.487 0.431 0; end: 6.6913060635885815  0.431  7.431448254773942 ; color: blue"></a-entity>
+<a-entity id="line139" line="start: 2.487 0.431 0; end: 6.560590289905074  0.431  7.5470958022277195 ; color: blue"></a-entity>
+<a-entity id="line140" line="start: 2.487 0.431 0; end: 6.427876096865396  0.431  7.660444431189778 ; color: blue"></a-entity>
+<a-entity id="line141" line="start: 2.487 0.431 0; end: 6.293203910498378  0.431  7.7714596145697055 ; color: blue"></a-entity>
+<a-entity id="line142" line="start: 2.487 0.431 0; end: 6.156614753256582  0.431  7.88010753606722 ; color: blue"></a-entity>
+<a-entity id="line143" line="start: 2.487 0.431 0; end: 6.018150231520483  0.431  7.986355100472928 ; color: blue"></a-entity>
+<a-entity id="line144" line="start: 2.487 0.431 0; end: 5.877852522924734  0.431  8.090169943749473 ; color: blue"></a-entity>
+<a-entity id="line145" line="start: 2.487 0.431 0; end: 5.735764363510465  0.431  8.191520442889916 ; color: blue"></a-entity>
+<a-entity id="line146" line="start: 2.487 0.431 0; end: 5.591929034707466  0.431  8.290375725550419 ; color: blue"></a-entity>
+<a-entity id="line147" line="start: 2.487 0.431 0; end: 5.44639035015027  0.431  8.386705679454241 ; color: blue"></a-entity>
+<a-entity id="line148" line="start: 2.487 0.431 0; end: 5.29919264233205  0.431  8.480480961564258 ; color: blue"></a-entity>
+<a-entity id="line149" line="start: 2.487 0.431 0; end: 5.150380749100545  0.431  8.571673007021122 ; color: blue"></a-entity>
+<a-entity id="line150" line="start: 2.487 0.431 0; end: 5.000000000000004  0.431  8.660254037844384 ; color: blue"></a-entity>
+<a-entity id="line151" line="start: 2.487 0.431 0; end: 4.848096202463369  0.431  8.746197071393958 ; color: blue"></a-entity>
+<a-entity id="line152" line="start: 2.487 0.431 0; end: 4.694715627858908  0.431  8.82947592858927 ; color: blue"></a-entity>
+<a-entity id="line153" line="start: 2.487 0.431 0; end: 4.539904997395469  0.431  8.910065241883679 ; color: blue"></a-entity>
+<a-entity id="line154" line="start: 2.487 0.431 0; end: 4.383711467890778  0.431  8.987940462991668 ; color: blue"></a-entity>
+<a-entity id="line155" line="start: 2.487 0.431 0; end: 4.226182617406992  0.431  9.0630778703665 ; color: blue"></a-entity>
+<a-entity id="line156" line="start: 2.487 0.431 0; end: 4.0673664307580015  0.431  9.13545457642601 ; color: blue"></a-entity>
+<a-entity id="line157" line="start: 2.487 0.431 0; end: 3.9073112848927387  0.431  9.205048534524403 ; color: blue"></a-entity>
+<a-entity id="line158" line="start: 2.487 0.431 0; end: 3.7460659341591236  0.431  9.271838545667872 ; color: blue"></a-entity>
+<a-entity id="line159" line="start: 2.487 0.431 0; end: 3.5836794954530076  0.431  9.335804264972015 ; color: blue"></a-entity>
+<a-entity id="line160" line="start: 2.487 0.431 0; end: 3.420201433256686  0.431  9.396926207859085 ; color: blue"></a-entity>
+<a-entity id="line161" line="start: 2.487 0.431 0; end: 3.255681544571567  0.431  9.455185755993169 ; color: blue"></a-entity>
+<a-entity id="line162" line="start: 2.487 0.431 0; end: 3.0901699437494767  0.431  9.510565162951535 ; color: blue"></a-entity>
+<a-entity id="line163" line="start: 2.487 0.431 0; end: 2.9237170472273717  0.431  9.563047559630354 ; color: blue"></a-entity>
+<a-entity id="line164" line="start: 2.487 0.431 0; end: 2.7563735581699893  0.431  9.612616959383189 ; color: blue"></a-entity>
+<a-entity id="line165" line="start: 2.487 0.431 0; end: 2.588190451025207  0.431  9.659258262890683 ; color: blue"></a-entity>
+<a-entity id="line166" line="start: 2.487 0.431 0; end: 2.4192189559966786  0.431  9.702957262759965 ; color: blue"></a-entity>
+<a-entity id="line167" line="start: 2.487 0.431 0; end: 2.2495105434386535  0.431  9.743700647852352 ; color: blue"></a-entity>
+<a-entity id="line168" line="start: 2.487 0.431 0; end: 2.079116908177599  0.431  9.781476007338055 ; color: blue"></a-entity>
+<a-entity id="line169" line="start: 2.487 0.431 0; end: 1.9080899537654465  0.431  9.81627183447664 ; color: blue"></a-entity>
+<a-entity id="line170" line="start: 2.487 0.431 0; end: 1.736481776669304  0.431  9.84807753012208 ; color: blue"></a-entity>
+<a-entity id="line171" line="start: 2.487 0.431 0; end: 1.5643446504023109  0.431  9.876883405951377 ; color: blue"></a-entity>
+<a-entity id="line172" line="start: 2.487 0.431 0; end: 1.3917310096006588  0.431  9.902680687415703 ; color: blue"></a-entity>
+<a-entity id="line173" line="start: 2.487 0.431 0; end: 1.2186934340514723  0.431  9.925461516413222 ; color: blue"></a-entity>
+<a-entity id="line174" line="start: 2.487 0.431 0; end: 1.0452846326765342  0.431  9.945218953682733 ; color: blue"></a-entity>
+<a-entity id="line175" line="start: 2.487 0.431 0; end: 0.8715574274765832  0.431  9.961946980917455 ; color: blue"></a-entity>
+<a-entity id="line176" line="start: 2.487 0.431 0; end: 0.6975647374412564  0.431  9.975640502598242 ; color: blue"></a-entity>
+<a-entity id="line177" line="start: 2.487 0.431 0; end: 0.5233595624294437  0.431  9.986295347545738 ; color: blue"></a-entity>
+<a-entity id="line178" line="start: 2.487 0.431 0; end: 0.3489949670250082  0.431  9.993908270190957 ; color: blue"></a-entity>
+<a-entity id="line179" line="start: 2.487 0.431 0; end: 0.1745240643728356  0.431  9.998476951563912 ; color: blue"></a-entity>
+
+    </a-scene>
+  </body>
+</html>
