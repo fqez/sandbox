@@ -1,0 +1,4 @@
+jderobot-pibot-comm>=0.1.6
+jderobot-interfaces-python>=0.1.5
+jderobot-config>=0.1.1
+RPi.GPIO

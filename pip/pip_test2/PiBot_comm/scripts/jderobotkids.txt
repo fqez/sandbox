@@ -1,0 +1,5 @@
+# m h  dom mon dow   command
+
+#*/1 * * * * /usr/bin/python /home/pi/local_Downloader/daemon_JdeRobot_executer.py 2>&1
+#* * * * * /usr/bin/python ~/local_Downloader/daemon_JdeRobot_executer.py
+@reboot /usr/bin/python ~/local_Downloader/daemon_JdeRobot_executer.py

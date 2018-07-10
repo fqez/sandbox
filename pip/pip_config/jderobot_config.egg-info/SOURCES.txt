@@ -1,0 +1,12 @@
+README.md
+setup.cfg
+setup.py
+jderobot_config/__init__.py
+jderobot_config/config.py
+jderobot_config/properties.py
+jderobot_config.egg-info/PKG-INFO
+jderobot_config.egg-info/SOURCES.txt
+jderobot_config.egg-info/dependency_links.txt
+jderobot_config.egg-info/top_level.txt
+jderobot_config/demo/__init__.py
+jderobot_config/demo/demo.py

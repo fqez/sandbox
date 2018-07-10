@@ -1,0 +1,11 @@
+README.md
+setup.cfg
+setup.py
+PiBot_comm/JdeRobotKids_listener.py
+PiBot_comm/__init__.py
+PiBot_comm/daemon_JdeRobot_executer.py
+PiBot_comm/scripts/__init__.py
+jderobot_pibot_comm.egg-info/PKG-INFO
+jderobot_pibot_comm.egg-info/SOURCES.txt
+jderobot_pibot_comm.egg-info/dependency_links.txt
+jderobot_pibot_comm.egg-info/top_level.txt

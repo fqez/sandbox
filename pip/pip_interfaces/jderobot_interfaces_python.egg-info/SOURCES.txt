@@ -1,0 +1,9 @@
+README.md
+setup.cfg
+setup.py
+jderobot_interfaces/JdeRobotKids.py
+jderobot_interfaces/__init__.py
+jderobot_interfaces_python.egg-info/PKG-INFO
+jderobot_interfaces_python.egg-info/SOURCES.txt
+jderobot_interfaces_python.egg-info/dependency_links.txt
+jderobot_interfaces_python.egg-info/top_level.txt
