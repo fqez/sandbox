@@ -1,0 +1,116 @@
+<?xml version="1.0" ?>
+<VisualStates>
+  <config type="1">
+    <buildDependencies/>
+    <runDependencies/>
+    <topics>
+      <topic id="1">
+        <name>/cmd_vel</name>
+        <type>geometry_msgs/Twist</type>
+        <opType>Publish</opType>
+      </topic>
+    </topics>
+  </config>
+  <global_namespace>
+    <functions></functions>
+    <variables></variables>
+  </global_namespace>
+  <libraries/>
+  <state id="0" initial="True">
+    <posx>0.0</posx>
+    <posy>0.0</posy>
+    <name>root</name>
+    <code></code>
+    <timestep>100</timestep>
+    <namespace>
+      <functions></functions>
+      <variables></variables>
+    </namespace>
+    <state id="1" initial="True">
+      <posx>946.0</posx>
+      <posy>854.0</posy>
+      <name>go_forward</name>
+      <code>velCommand = Twist()
+velCommand.linear.x = 0.3
+velCommand.angular.z = 0.0
+self.globalNamespace.publishcmd_vel(velCommand)</code>
+      <timestep>100</timestep>
+      <namespace>
+        <functions></functions>
+        <variables></variables>
+      </namespace>
+      <transition id="3">
+        <type>0</type>
+        <time>3000</time>
+        <posx>1070.5</posx>
+        <posy>854.5</posy>
+        <name>transition 3</name>
+        <originid>1</originid>
+        <destinationid>3</destinationid>
+        <code></code>
+      </transition>
+    </state>
+    <state id="3" initial="False">
+      <posx>1067.0</posx>
+      <posy>974.0</posy>
+      <name>stop</name>
+      <code>velCommand = Twist()
+velCommand.linear.x = 0.0
+velCommand.angular.z = 0.0
+self.globalNamespace.publishcmd_vel(velCommand)</code>
+      <timestep>100</timestep>
+      <namespace>
+        <functions></functions>
+        <variables></variables>
+      </namespace>
+      <transition id="4">
+        <type>0</type>
+        <time>1000</time>
+        <posx>1069.5</posx>
+        <posy>1075.0</posy>
+        <name>transition 4</name>
+        <originid>3</originid>
+        <destinationid>4</destinationid>
+        <code></code>
+      </transition>
+    </state>
+    <state id="4" initial="False">
+      <posx>923.0</posx>
+      <posy>1079.0</posy>
+      <name>turn</name>
+      <code>velCommand = Twist()
+velCommand.linear.x = 0.0
+velCommand.angular.z = 0.2
+self.globalNamespace.publishcmd_vel(velCommand)</code>
+      <timestep>100</timestep>
+      <namespace>
+        <functions></functions>
+        <variables></variables>
+      </namespace>
+      <transition id="6">
+        <type>0</type>
+        <time>3000</time>
+        <posx>840.5</posx>
+        <posy>1080.0</posy>
+        <name>transition 6</name>
+        <originid>4</originid>
+        <destinationid>5</destinationid>
+        <code></code>
+      </transition>
+    </state>
+    <state id="5" initial="False">
+      <posx>843.0</posx>
+      <posy>955.0</posy>
+      <name>final</name>
+      <code>velCommand = Twist()
+velCommand.linear.x = 0.0
+velCommand.angular.z = 0.0
+self.globalNamespace.publishcmd_vel(velCommand)</code>
+      <timestep>100</timestep>
+      <namespace>
+        <functions></functions>
+        <variables></variables>
+      </namespace>
+    </state>
+  </state>
+</VisualStates>
