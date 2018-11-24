@@ -8,7 +8,7 @@ import sys
 import cv2
 
 import lpf
-import sobel
+from sobel import filterSobelOrig, filterSobelFft
 
 time_cycle = 50
 
@@ -20,7 +20,6 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__(parent)
 
         self.sourceImage = 'lena.jpg'
-
 
         self.setupUI()
 
@@ -170,6 +169,7 @@ class MainWindow(QMainWindow):
 
     def checkText(self):
         img = cv2.imread(self.sourceImage)
+        print(self.sourceImage,img)
         frec = self.cutFrec.text()
         n = self.order.text()
         if frec == "" or n == "":
@@ -198,12 +198,13 @@ class MainWindow(QMainWindow):
 
     @pyqtSlot()
     def on_change_cf(self):
-        self.checkText()
+        #self.checkText()
+        print(self.sourceImage)
 
 
     @pyqtSlot()
     def on_click(self):
-        self.sourceImage = self.openFileNameDialog()
+        self.openFileNameDialog()
 
     @pyqtSlot()
     def on_click_lpf(self):
@@ -228,27 +229,32 @@ class MainWindow(QMainWindow):
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         SobelH = np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
         SobelV = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
+        print(SobelV)
+        BH1,BV1 = filterSobelOrig(img, SobelH, SobelV)
         img_fft = np.fft.fft2(img)
-        BH1,BV1 = sobel.filterSobelOrig(img, SobelH, SobelV)
-        BH2,BV2 = sobel.filterSobelFft(img_fft, SobelH, SobelV)
+        BH2,BV2 = filterSobelFft(img_fft, SobelH, SobelV)
 
         cv2.imwrite("bh1.jpg", BH1)
         cv2.imwrite("bv1.jpg", BV1)
         cv2.imwrite("bh2.jpg", BH2)
         cv2.imwrite("bv2.jpg", BV2)
 
-        pixmap = QPixmap('BH1.jpg')
-        pixmap2 = QPixmap('BV1.jpg')
-        pixmap3 = QPixmap('BH2.jpg')
-        pixmap4 = QPixmap('BV2.jpg')
+        pixmap = QPixmap('bh1.jpg')
+        pixmap2 = QPixmap('bv1.jpg')
+        pixmap3 = QPixmap('bh2.jpg')
+        pixmap4 = QPixmap('bv2.jpg')
         pixmap = pixmap.scaled(320, 240, QtCore.Qt.KeepAspectRatio)
         pixmap2 = pixmap2.scaled(320, 240, QtCore.Qt.KeepAspectRatio)
-        pixmap3 = pixmap.scaled(320, 240, QtCore.Qt.KeepAspectRatio)
-        pixmap4 = pixmap2.scaled(320, 240, QtCore.Qt.KeepAspectRatio)
+        pixmap3 = pixmap3.scaled(320, 240, QtCore.Qt.KeepAspectRatio)
+        pixmap4 = pixmap4.scaled(320, 240, QtCore.Qt.KeepAspectRatio)
         self.imgLabel2.setPixmap(pixmap)
+        self.imgText2.setText("Horizontal borders image domain")
         self.imgLabel3.setPixmap(pixmap2)
+        self.imgText3.setText("Vertical borders image domain")
         self.imgLabel4.setPixmap(pixmap3)
+        self.imgText4.setText("Horizontal borders FFT domain")
         self.imgLabel5.setPixmap(pixmap4)
+        self.imgText5.setText("Vertical borders FFT domain")
 
 
 
@@ -265,6 +271,7 @@ class MainWindow(QMainWindow):
         fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
                                                   "All Files (*);;JPEG (*.jpg);;PNG (*.png)", options=options)
         if fileName:
+            print(fileName)
             self.sourceImage = fileName
             pixmap = QPixmap(fileName)
             pixmap = pixmap.scaled(320, 240, QtCore.Qt.KeepAspectRatio)
@@ -274,16 +281,10 @@ class MainWindow(QMainWindow):
             self.imgLabel4.setPixmap(pixmap)
             self.imgLabel5.setPixmap(pixmap)
 
+if __name__ == "__main__":
 
+    app = QApplication(sys.argv)
+    frame = MainWindow()
+    frame.show()
 
-
-
-
-
-app = QApplication(sys.argv)
-frame = MainWindow()
-
-frame.show()
-
-
-sys.exit(app.exec_())
+    sys.exit(app.exec_())

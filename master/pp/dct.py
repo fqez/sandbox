@@ -41,6 +41,20 @@ def processCompress(img, size, mask):
     plt.subplot(1, 2, 1), plt.title('DCT'), plt.imshow(DCT, cmap='gray')
     plt.subplot(1, 2, 2), plt.title('IDCT'), plt.imshow(IDCT, cmap='gray')
 
+def cc(n):
+
+    b = np.array([1, 3, 6, 10, 15, 21, 28, 36])
+    a = np.array([1, 2, 3, 4, 5, 6, 7, 8])
+
+    return int(a[np.where(b == n)[0]])
+
+def create_mask(ratio):
+    a = np.triu(np.ones(ratio))  # this is for quantising w/ mask
+    W = np.zeros((8, 8))
+    W[:ratio, 8-ratio:] = a
+    W = np.fliplr(W)
+    return W
+
 
 if __name__ == "__main__":
     path = input('What image do you want to do a DCT?: ')

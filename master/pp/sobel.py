@@ -17,10 +17,11 @@ def filterSobelOrig(img, SobelH, SobelV):
     # Convolution
     BorderH = cv2.filter2D(img, -1, -SobelH)
     BorderV = cv2.filter2D(img, -1, -SobelV)
+    return BorderH, BorderV
     # Show images
-    plt.figure()
-    plt.subplot(1,2,1),plt.title('Horizontal Border (Image domain)'),plt.imshow(BorderH,cmap = 'gray')
-    plt.subplot(1,2,2),plt.title('Vertical Border (Image Domain)'),plt.imshow(BorderV,cmap = 'gray')
+    #plt.figure()
+    #plt.subplot(1,2,1),plt.title('Horizontal Border (Image domain)'),plt.imshow(BorderH,cmap = 'gray')
+    #plt.subplot(1,2,2),plt.title('Vertical Border (Image Domain)'),plt.imshow(BorderV,cmap = 'gray')
 
 
 def filterSobelFft(img, SobelH, SobelV):
@@ -39,11 +40,12 @@ def filterSobelFft(img, SobelH, SobelV):
     # Threshold
     BorderH[BorderH<0]=0
     BorderV[BorderV<0]=0
+    return np.uint8(BorderH), np.uint8(BorderV)
     # Show images
-    plt.figure()
-    plt.subplot(1,2,1),plt.title('Horizontal Border (FFT)'),plt.imshow(np.uint8(BorderH),cmap = 'gray')
-    plt.subplot(1,2,2),plt.title('Vertical Border (FFT)'),plt.imshow(np.uint8(BorderV),cmap = 'gray')
-    plt.show()
+    #plt.figure()
+    #plt.subplot(1,2,1),plt.title('Horizontal Border (FFT)'),plt.imshow(np.uint8(BorderH),cmap = 'gray')
+    #plt.subplot(1,2,2),plt.title('Vertical Border (FFT)'),plt.imshow(np.uint8(BorderV),cmap = 'gray')
+    #plt.show()
 
 
 if __name__ == "__main__":
