@@ -147,6 +147,7 @@ class MainWindow(QMainWindow):
 
         # ---------------- IMAGES ------------------------
         self.imgLabel = QtWidgets.QLabel(self)
+        self.imgLabel.fileName = 'lena.jpg'
         self.imgLabel.mousePressEvent = self.clicked1
         self.imgText = QtWidgets.QLabel(self)
         self.imgText.setText("source")
@@ -155,7 +156,8 @@ class MainWindow(QMainWindow):
         self.vsource.addWidget(self.imgLabel)
 
         self.imgLabel2 = QtWidgets.QLabel(self)
-        self.imgLabel.mousePressEvent = self.clicked1
+        self.imgLabel2.fileName = 'lena.jpg'
+        self.imgLabel2.mousePressEvent = self.clicked2
         self.imgText2 = QtWidgets.QLabel(self)
         self.imgText2.setText("Title1")
         self.vsource2 = QVBoxLayout()
@@ -163,7 +165,8 @@ class MainWindow(QMainWindow):
         self.vsource2.addWidget(self.imgLabel2)
 
         self.imgLabel3 = QtWidgets.QLabel(self)
-        self.imgLabel.mousePressEvent = self.clicked1
+        self.imgLabel3.fileName = 'lena.jpg'
+        self.imgLabel3.mousePressEvent = self.clicked3
         self.imgText3 = QtWidgets.QLabel(self)
         self.imgText3.setText("Title2")
         self.vsource3 = QVBoxLayout()
@@ -171,7 +174,8 @@ class MainWindow(QMainWindow):
         self.vsource3.addWidget(self.imgLabel3)
 
         self.imgLabel4 = QtWidgets.QLabel(self)
-        self.imgLabel.mousePressEvent = self.clicked1
+        self.imgLabel4.fileName = 'lena.jpg'
+        self.imgLabel4.mousePressEvent = self.clicked4
         self.imgText4 = QtWidgets.QLabel(self)
         self.imgText4.setText("Title3")
         self.vsource4 = QVBoxLayout()
@@ -179,7 +183,8 @@ class MainWindow(QMainWindow):
         self.vsource4.addWidget(self.imgLabel4)
 
         self.imgLabel5 = QtWidgets.QLabel(self)
-        self.imgLabel.mousePressEvent = self.clicked1
+        self.imgLabel5.fileName = 'lena.jpg'
+        self.imgLabel5.mousePressEvent = self.clicked5
         self.imgText5 = QtWidgets.QLabel(self)
         self.imgText5.setText("Title4")
         self.vsource5 = QVBoxLayout()
@@ -227,8 +232,25 @@ class MainWindow(QMainWindow):
         self.imgW.setImage(self.imgLabel.fileName)
         self.imgW.show()
 
+    def clicked2(self, event):
+        print("labelClicked")
+        self.imgW2.setImage(self.imgLabel2.fileName)
+        self.imgW2.show()
 
+    def clicked3(self, event):
+        print("labelClicked")
+        self.imgW3.setImage(self.imgLabel3.fileName)
+        self.imgW3.show()
 
+    def clicked4(self, event):
+        print("labelClicked")
+        self.imgW4.setImage(self.imgLabel4.fileName)
+        self.imgW4.show()
+
+    def clicked5(self, event):
+        print("labelClicked")
+        self.imgW5.setImage(self.imgLabel5.fileName)
+        self.imgW5.show()
 
     def checkText(self):
         img = cv2.imread(self.sourceImage)
@@ -252,8 +274,9 @@ class MainWindow(QMainWindow):
             pixmap2 = QPixmap('results/fourier.jpg')
             pixmap = pixmap.scaled(320, 240, QtCore.Qt.KeepAspectRatio)
             pixmap2 = pixmap2.scaled(320, 240, QtCore.Qt.KeepAspectRatio)
+            self.imgLabel2.fileName ='results/filter.jpg'
+            self.imgLabel3.fileName = 'results/fourier.jpg'
             self.imgLabel2.setPixmap(pixmap)
-
             self.imgLabel3.setPixmap(pixmap2)
             self.imgText3.setText("Center FFT")
 
@@ -335,6 +358,8 @@ class MainWindow(QMainWindow):
             pixmap2 = pixmap2.scaled(self.imgLabel2.width(), self.imgLabel2.height(), QtCore.Qt.KeepAspectRatio)
             pixmap3 = pixmap3.scaled(self.imgLabel3.width(), self.imgLabel3.height(), QtCore.Qt.KeepAspectRatio)
             pixmap4 = pixmap4.scaled(self.imgLabel4.width(), self.imgLabel4.height(), QtCore.Qt.KeepAspectRatio)
+            self.imgLabel2.fileName = 'results/comp_1_dct'
+            self.imgLabel3.fileName = 'results/comp_1_idct.jpg'
             self.imgLabel2.setPixmap(pixmap)
             self.imgText2.setText(b.text() + " DCT")
             self.imgLabel3.setPixmap(pixmap2)
