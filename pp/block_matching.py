@@ -45,15 +45,11 @@ def get_block(img, x, y):
 
 def match(im1, im2, depth, index_rows, tn, ret):
 
-    print("thread",tn)
-    #print(HALF_KERNEL)
     size = depth.shape
-    ssd_val = 0
 
     for rows in range(index_rows[0], index_rows[1]):
         #print("thread:", tn, rows)
         for cols in range(HALF_KERNEL, size[1]-HALF_KERNEL):
-            #print("thread:", tn, rows,cols)
 
             #b1 = im1[rows-HALF_KERNEL:rows+HALF_KERNEL, cols-HALF_KERNEL:cols+HALF_KERNEL]
             b1 = get_block(im1, rows, cols)
@@ -66,21 +62,15 @@ def match(im1, im2, depth, index_rows, tn, ret):
                 if cols+o+HALF_KERNEL > size[1]-1:
                     break
                 ssd_val = ssd(b1, b2)
-                #print(ssd_val)
                 if ssd_val > ant:
                     ant = ssd_val
                     best = o
-                    #print(best)
 
             depth[rows-index_rows[0], cols] = best * (255/MAX_DISPARITY)
             cv2.imshow("d"+str(tn), depth)
             cv2.waitKey(1)
 
-            #cv2.imshow("d", depth)
-            #cv2.waitKey(0)
-
     ret[tn] = depth
-
 
 if __name__ == "__main__":
 
@@ -89,8 +79,8 @@ if __name__ == "__main__":
 
     imR = loadImage(pathR)
     imL = loadImage(pathL)
-    imL=cv2.resize(imL,(320,240))
-    imR=cv2.resize(imR, (320, 240))
+    #imL=cv2.resize(imL,(320,240))
+    #imR=cv2.resize(imR, (320, 240))
 
     imR = cv2.cvtColor(imR, cv2.COLOR_RGB2GRAY)
     imL = cv2.cvtColor(imL, cv2.COLOR_RGB2GRAY)
@@ -104,35 +94,17 @@ if __name__ == "__main__":
         print(depth.shape)
         print(chunk)
 
-
-    lock = threading.Lock()
     threads = [None] * N_THREADS
     results = [None] * N_THREADS
 
+    # ------------- single thread ----------------
     #d = match(imR, imL, depth, (0,imL.shape[1]), -1)
     #cv2.imwrite("images/result.jpg", d)
     #cv2.imshow("d", d)
     #cv2.waitKey(0)
+    # --------- end single thread ---------------
 
-
-    '''
-    for i in range(len(threads)):
-        threads[i] = ThreadWithReturnValue(target=match, args=(imL, imR, depth[i*chunk:i*chunk+chunk,:].copy(),(i*chunk,i*chunk+chunk),i))
-        threads[i].start()
-
-    # do some other stuff
-
-    imLR = np.zeros((chunk,320))
-    for i in range(len(threads)):
-        results[i] = threads[i].join()
-        name = "d" + str(i)
-        cv2.imwrite("images/results/"+name+".jpg", results[i])
-        #cv2.imshow(name, results[i])
-        imLR = np.concatenate((imLR, results[i]), axis=0)
-
-    #name = "d" + str(i)
-    cv2.imshow("r", imLR)
-    '''
+    # --------------- multithread -------------
     manager = multiprocessing.Manager()
     return_dict = manager.dict()
     jobs = []
@@ -148,44 +120,15 @@ if __name__ == "__main__":
 
     chunked_images = sorted(return_dict.items(), key=operator.itemgetter(0))
 
-    imLR = np.zeros((0,320),np.uint8)
+    imLR = np.zeros((0,imL.shape[1]),np.uint8)
     for i in range(N_THREADS):
         im = chunked_images[i][1]
-        cv2.imshow("aa"+str(i), im)
+        cv2.imshow("Thread "+str(i), im)
         imLR = np.concatenate((imLR, im), axis=0)
 
-    cv2.imshow("A", imLR)
+    cv2.imshow("Result", imLR)
     cv2.waitKey(0)
 
+    #------------ end multithread ----------------
 
-
-    # do some other stuff
-    '''
-    imLR = np.zeros((chunk,320))
-    for i in range(len(threads)):
-        results[i] = threads[i].join()
-        print(results[i])
-        name = "d" + str(i)
-        cv2.imwrite("images/results/"+name+".jpg", results[i])
-        #cv2.imshow(name, results[i])
-        imLR = np.concatenate((imLR, results[i]), axis=0)
-
-    #name = "d" + str(i)
-    cv2.imshow("r", imLR)
-    '''
-
-
-    #depth = match(imL, imR, depth)
-    #cv2.imshow("im1", imL)
-    #cv2.imshow("im2", imR)
-    #cv2.imshow("depth", depth)
-
-    #imL1 = imL[:100, :]
-    #imL2 = imL[100:, :]
-    #imLR = np.concatenate((imL1, imL2), axis=0)
-    #cv2.imshow("iml1", imL1)
-    #cv2.imshow("iml2", imL2)
-    #cv2.imshow("imlr", imLR)
-
-    cv2.waitKey(0)
     cv2.destroyAllWindows()
