@@ -1,0 +1,17 @@
+Para installar pyqt3d, instalar primero qt3d
+
+```
+sudo apt install qt3d5-*
+```
+
+Después descargar el paquete pyqt3d: https://www.riverbankcomputing.com/software/pyqt3d/download
+
+descomprimir y dentro de la carpeta
+
+```
+python configure.py
+make
+sudo make install
+```
+
+y gg
