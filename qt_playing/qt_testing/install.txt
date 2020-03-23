@@ -14,4 +14,8 @@ make
 sudo make install
 ```
 
-y gg
+para generar los recursos
+
+```
+pyrcc5 resources.qrc -o resources.py
+```

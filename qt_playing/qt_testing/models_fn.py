@@ -2,12 +2,15 @@ from __future__ import division
 
 import sys
 import time
+import os
 import datetime
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5 import QtSvg
+
+from models3d import *
 
 
 from threadGUI import ThreadGUI
@@ -18,6 +21,18 @@ HEIGHT = 900
 
 # WIDTH = 800
 # HEIGHT = 600
+
+from contextlib import contextmanager
+
+@contextmanager
+def suppress_stdout():
+    with open(os.devnull, "w") as devnull:
+        old_stdout = sys.stdout
+        sys.stdout = devnull
+        try:  
+            yield
+        finally:
+            sys.stdout = old_stdout
 
 class VLine(QFrame):
     # a simple VLine, like the one you get from designer
@@ -75,6 +90,20 @@ class ClickableLabel(QLabel):
         self.ga.stop()
         self.hide()
 
+class CustomQFrame(QFrame):
+
+    def __init__(self, scene, parent=None, flags=Qt.WindowFlags()):
+        super(CustomQFrame, self).__init__(parent=parent, flags=flags)
+        self.scene = scene
+        
+    def enterEvent(self, event):
+        self.setStyleSheet('QFrame {background-color: rgba(255,255,255,0.3); border: 2px solid white; }')
+
+    def leaveEvent(self, event):
+        self.setStyleSheet('background-color: rgb(51,51,51')
+
+
+
 class ExampleWindow(QMainWindow):
     updGUI = pyqtSignal()
 
@@ -94,25 +123,66 @@ class ExampleWindow(QMainWindow):
         self.timer.timeout.connect(self.recurring_timer)
         self.timer.start()
 
-        main_layout = QHBoxLayout()
+        main_layout = QVBoxLayout()
         central_widget = QWidget()
         central_widget.setStyleSheet('background-color: rgb(51,51,51)')
         central_widget.setLayout(main_layout)
         self.setCentralWidget(central_widget)
 
+        robot_layout = QGridLayout()
+        f1_frame = self.create_robot_frame('f1', 'Formula 1')
+        drone_frame = self.create_robot_frame('drone', 'Drone')
+        roomba_frame = self.create_robot_frame('roomba', 'Roomba')
+        car_frame = self.create_robot_frame('car', 'Car')
+        turtle_frame = self.create_robot_frame('turtlebot', 'Turtlebot')
+        pepper_frame = self.create_robot_frame('pepper', 'Pepper - Comming soon')
+        # v3d.show()
+        robot_layout.addWidget(f1_frame, 0, 0)
+        robot_layout.addWidget(drone_frame, 0, 1)
+        robot_layout.addWidget(roomba_frame, 0, 2)
+        robot_layout.addWidget(car_frame, 1, 0)
+        robot_layout.addWidget(turtle_frame, 1, 1)
+        robot_layout.addWidget(pepper_frame, 1, 2)
+
         
 
-        from models3d import *
+        font = QFont('Arial', 30)
+        lbl = QLabel(self)
+        lbl.setFont(font)
+        lbl.setText("Select your robot")
+        lbl.setFixedHeight(100)
+        lbl.setAlignment(Qt.AlignCenter) 
+        lbl.setStyleSheet('color: white')     
 
-        v3d = View3D('car')
-        v3d2 = View3D('drone')
-        v3d3 = View3D('car')
-        # v3d.show()
-        main_layout.addWidget(v3d)
-        main_layout.addWidget(v3d2)
-        main_layout.addWidget(v3d3)
+        main_layout.addLayout(robot_layout)
+        main_layout.addWidget(lbl)
 
         self.show()
+
+    def createLabel(self, text, font):
+        label = QLabel(self)
+        label.setFont(font)
+        label.setText(text)
+        label.setFixedHeight(40)
+        label.setAlignment(Qt.AlignCenter) 
+        label.setStyleSheet('background-color: rgba(0,0,0,0);color: white; border: 0px solid black; ')
+        return label
+
+    def create_robot_frame(self, robot_type, robot_name):
+
+        v3d = View3D(robot_type)
+        frame = CustomQFrame(v3d)
+        r1_layout = QVBoxLayout()        
+        font = QFont('Arial', 15)
+        lr = self.createLabel(robot_name, font) 
+
+        r1_layout.addWidget(v3d)
+        r1_layout.addWidget(lr)
+        frame.setLayout(r1_layout)
+
+        return frame
+
+
 
     def init_statusbar(self):
         self.sbar = self.statusBar()
