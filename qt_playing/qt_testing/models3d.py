@@ -37,7 +37,6 @@ class OrbitTransformController(QTransform):
         self.m_target = target
         self.targetChanged.emit()
 
-
     def setRadius(self, radius):
         if fuzzyCompareDouble(radius, self.m_radius):
             return
@@ -126,18 +125,32 @@ class View3D(QWidget):
 
 
         # # For camera controls.
-        camController = QOrbitCameraController(scene)
-        camController.setLinearSpeed(250.0)
-        camController.setLookSpeed(250.0)
-        camController.setCamera(self.camera)
+        # camController = QOrbitCameraController(scene)
+        # camController.setLinearSpeed(250.0)
+        # camController.setLookSpeed(250.0)
+        # camController.setCamera(self.camera)
+
+    def change_window(self):
+        self.parent.switch_window.emit()
 
     def start_animation(self):
-        print('starting animation')
-        
+        self.stop_animation()
         self.sphereRotateTransformAnimation.start()
+
+    def start_animation_with_duration(self, duration):
+        self.stop_animation()
+        self.sphereRotateTransformAnimation.setDuration(duration)
+        self.sphereRotateTransformAnimation.setLoopCount(1)
+        self.start_animation()
+        self.sphereRotateTransformAnimation.finished.connect(self.change_window)
+
 
     def stop_animation(self):
         self.sphereRotateTransformAnimation.stop()
+
+    def set_animation_speed(self, speed):
+        """ speed of a 360deg rotation in seconds """
+        self.sphereRotateTransformAnimation.setDuration(speed)
 
     def createScene(self):
         # Root entity
@@ -233,16 +246,16 @@ class View3D(QWidget):
         return rootEntity
 
 
-class Application(QMainWindow):
-    def __init__(self):
-        super(Application, self).__init__()
-        #
-        view3d = View3D()
-        self.setCentralWidget(view3d)
-        self.show()
+# class Application(QMainWindow):
+#     def __init__(self):
+#         super(Application, self).__init__()
+#         #
+#         view3d = View3D()
+#         self.setCentralWidget(view3d)
+#         self.show()
 
-# Approach 1 - Integrate Qt3DWindow into a QMainWindow
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    ex = Application()
-    sys.exit(app.exec_())
+# # Approach 1 - Integrate Qt3DWindow into a QMainWindow
+# if __name__ == '__main__':
+#     app = QApplication(sys.argv)
+#     ex = Application()
+#     sys.exit(app.exec_())
