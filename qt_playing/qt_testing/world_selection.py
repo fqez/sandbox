@@ -73,6 +73,31 @@ class ClickableLabel(QLabel):
         self.ga.stop()
         self.hide()           
 
+
+class QCustomQWidget (QWidget):
+    def __init__ (self, parent = None):
+        super(QCustomQWidget, self).__init__(parent)
+        self.textQVBoxLayout = QVBoxLayout()
+        font = QFont('Arial', 30)
+        self.textUpQLabel    = QLabel()
+        self.textUpQLabel.setFont(font)
+        self.textQVBoxLayout.addWidget(self.textUpQLabel)
+        self.allQHBoxLayout  = QHBoxLayout()
+        self.iconQLabel      = QLabel()
+        self.allQHBoxLayout.addWidget(self.iconQLabel, 0)
+        self.allQHBoxLayout.addLayout(self.textQVBoxLayout, 1)
+        self.setLayout(self.allQHBoxLayout)
+        # setStyleSheet
+        self.textUpQLabel.setStyleSheet('''
+            color: rgb(255, 255, 255);
+        ''')
+
+    def setTextUp (self, text):
+        self.textUpQLabel.setText(text)
+
+    def setIcon (self, imagePath):
+        self.iconQLabel.setPixmap(QPixmap(imagePath))
+
 class WorldSelection(QWidget):
     updGUI = pyqtSignal()
     switch_window = pyqtSignal()
@@ -90,15 +115,41 @@ class WorldSelection(QWidget):
         self.setLayout(main_layout)
 
         logo = Logo()
-        main_layout.addWidget(logo)
 
-        self.world_layout = QHBoxLayout()
-        f1_frame = self.create_robot_frame('f1')
+        v3d = View3D('f1', self)
+        frame = QFrame(self)
+        self.r1_layout = QHBoxLayout()
+        
+        
+        myQListWidget = QListWidget()
+        myQListWidget.setStyleSheet("border: 0px;")
+        myQListWidget.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
+        myQListWidget.verticalScrollBar().setSingleStep(10)
+        myQListWidget.setMaximumWidth(800)
+        for index, icon in [
+            ('No.1',  'icon.png'),
+            ('No.2',  'icon.png'),
+            ('No.3',  'icon.png'),
+            ('No.2',  'icon.png'),
+            ('No.3',  'icon.png'),
+            ('No.2',  'icon.png'),
+            ('No.3',  'icon.png')]:
+            # Create QCustomQWidget
+            myQCustomQWidget = QCustomQWidget()
+            myQCustomQWidget.setTextUp(index)
+            myQCustomQWidget.setIcon(':/assets/logo_100.svg')
+            # Create QListWidgetItem
+            myQListWidgetItem = QListWidgetItem(myQListWidget)
+            # Set size hint
+            myQListWidgetItem.setSizeHint(QSize(200, 200))
+            # Add QListWidgetItem into QListWidget
+            myQListWidget.addItem(myQListWidgetItem)
+            myQListWidget.setItemWidget(myQListWidgetItem, myQCustomQWidget)     
 
-        lbl = QLabel('ASDFASDF')
-
-        self.world_layout.addWidget(f1_frame, 0)
-        self.world_layout.addWidget(lbl, 1)
+        self.r1_layout.addWidget(v3d)
+        self.r1_layout.addWidget(myQListWidget)
+        
+        frame.setLayout(self.r1_layout)   
 
         font = QFont('Arial', 30)
         lbl = ClickableLabel(self)
@@ -108,18 +159,9 @@ class WorldSelection(QWidget):
         lbl.setAlignment(Qt.AlignCenter) 
         lbl.setStyleSheet('color: yellow')     
 
-        main_layout.addLayout(self.robot_layout)
+        main_layout.addWidget(logo)
+        main_layout.addWidget(frame)
         main_layout.addWidget(lbl)
-
-    def create_robot_frame(self, robot_type):
-
-        v3d = View3D(robot_type, self)
-        frame = QFrame(v3d)
-        r1_layout = QVBoxLayout()        
-        r1_layout.addWidget(v3d)
-        frame.setLayout(r1_layout)
-
-        return frame
 
     def update_gui(self):
         # self.update()

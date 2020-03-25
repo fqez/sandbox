@@ -90,24 +90,25 @@ class Controller:
         self.title.show()
     
     def show_robot_selection(self):
+        # delete_widgets_from(self.parent.main_layout)
         self.title.close()
-        delete_widgets_from(self.parent.main_layout)
+        del self.title
         self.robot_selector = RobotSelection(self.parent)
         self.parent.main_layout.addWidget(self.robot_selector)
         self.robot_selector.switch_window.connect(self.show_world_selection)
         self.robot_selector.show()
 
     def show_world_selection(self):
+        # delete_widgets_from(self.parent.main_layout)
         self.robot_selector.close()
-        delete_widgets_from(self.parent.main_layout)
+        del self.robot_selector
         self.world_selector = WorldSelection(self.parent)
-        self.paretn.main_layout.addWidget(self.world_selector)
+        self.parent.main_layout.addWidget(self.world_selector)
         self.world_selector.switch_window.connect(self.show_layout_selection)
         self.world_selector.show()
 
     def show_layout_selection(self):
         print('A layouts')
-
 
 def delete_widgets_from(layout):
     """ memory secure. """

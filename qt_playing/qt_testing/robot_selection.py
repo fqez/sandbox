@@ -163,7 +163,21 @@ class RobotSelection(QWidget):
 
         return frame
 
+    def emit_and_destroy(self):
+        delete_widgets_from(self.robot_layout)
+        self.switch_window.emit()
+
+
     def update_gui(self):
         # self.update()
         # print('Size {} x {} px'.format(self.width(), self.height()))
         pass
+
+def delete_widgets_from(layout):
+    """ memory secure. """
+    for i in reversed(range(layout.count())): 
+        widgetToRemove = layout.itemAt(i).widget()
+        # remove it from the layout list
+        layout.removeWidget(widgetToRemove)
+        # remove it from the gui
+        widgetToRemove.setParent(None)

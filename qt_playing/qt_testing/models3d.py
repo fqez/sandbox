@@ -131,8 +131,8 @@ class View3D(QWidget):
         # camController.setCamera(self.camera)
 
     def change_window(self):
-        self.parent.switch_window.emit()
-
+        self.parent.emit_and_destroy()
+    
     def start_animation(self):
         self.stop_animation()
         self.sphereRotateTransformAnimation.start()
@@ -245,6 +245,14 @@ class View3D(QWidget):
 
         return rootEntity
 
+def delete_widgets_from(layout):
+    """ memory secure. """
+    for i in reversed(range(layout.count())): 
+        widgetToRemove = layout.itemAt(i).widget()
+        # remove it from the layout list
+        layout.removeWidget(widgetToRemove)
+        # remove it from the gui
+        widgetToRemove.setParent(None)
 
 # class Application(QMainWindow):
 #     def __init__(self):
