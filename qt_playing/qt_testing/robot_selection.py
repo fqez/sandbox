@@ -93,6 +93,7 @@ class CustomQFrame(QFrame):
             print('mouse pressed in', self.scene.robot_type)
             self.scene.set_animation_speed(1000)
             self.scene.start_animation_with_duration(2000)
+            self.parent.parent.robot_selection = self.scene.robot_type
            
 
 class RobotSelection(QWidget):
@@ -164,7 +165,7 @@ class RobotSelection(QWidget):
         return frame
 
     def emit_and_destroy(self):
-        delete_widgets_from(self.robot_layout)
+        # delete_widgets_from(self.robot_layout)  # core dumped... revisar
         self.switch_window.emit()
 
 

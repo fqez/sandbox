@@ -30,6 +30,9 @@ class ParentWindow(QMainWindow):
         self.updGUI.connect(self.update_gui)
         self.initUI()
 
+        self.robot_selection = None
+        self.world_selection = None
+
     def initUI(self):
         self.setFixedSize(self.windowsize)
         self.init_statusbar()
@@ -90,7 +93,7 @@ class Controller:
         self.title.show()
     
     def show_robot_selection(self):
-        # delete_widgets_from(self.parent.main_layout)
+        delete_widgets_from(self.parent.main_layout)
         self.title.close()
         del self.title
         self.robot_selector = RobotSelection(self.parent)
@@ -99,10 +102,10 @@ class Controller:
         self.robot_selector.show()
 
     def show_world_selection(self):
-        # delete_widgets_from(self.parent.main_layout)
+        delete_widgets_from(self.parent.main_layout)
         self.robot_selector.close()
         del self.robot_selector
-        self.world_selector = WorldSelection(self.parent)
+        self.world_selector = WorldSelection(self.parent.robot_selection, self.parent)
         self.parent.main_layout.addWidget(self.world_selector)
         self.world_selector.switch_window.connect(self.show_layout_selection)
         self.world_selector.show()

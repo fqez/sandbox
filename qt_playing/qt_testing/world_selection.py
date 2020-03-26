@@ -4,6 +4,7 @@ import sys
 import time
 import os
 import datetime
+import json
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -29,6 +30,49 @@ import threading
 #         finally:
 #             sys.stdout = old_stdout
 
+class InfoLabel(QLabel):
+
+    def __init__(self, description, parent = None):
+        QLabel.__init__(self, parent)
+        self.description = description
+        
+        self.setFixedSize(60,60)
+        self.setPixmap(QPixmap(':/assets/info_icon.png').scaled(50,50, Qt.KeepAspectRatio))
+        self.setMouseTracking(True)
+        self.setStyleSheet("""QToolTip { 
+                           background-color: rgb(51,51,51); 
+                           color: white; 
+                           border: black solid 1px;
+                           font-size: 20px;
+                           }""")
+        self.setToolTip(self.description)  
+
+    def enterEvent(self, event):
+        self.setPixmap(QPixmap(':/assets/info_icon.png').scaled(60,60, Qt.KeepAspectRatio))
+        
+    def leaveEvent(self, event):
+        self.setPixmap(QPixmap(':/assets/info_icon.png').scaled(50,50, Qt.KeepAspectRatio))
+    
+
+class WorldLabel(QLabel):
+
+    def __init__(self, parent = None):
+        QLabel.__init__(self, parent)
+        self.setMouseTracking(True)
+        self.parent = parent
+        self.setStyleSheet('color: white')
+
+    def enterEvent(self, event):
+        self.setStyleSheet('color: yellow')
+    
+    def leaveEvent(self, event):
+        self.setStyleSheet('color: white')
+    
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            self.parent.parent.generate_launch_file(self.parent.world['world'])
+
+    
 class ClickableLabel(QLabel):
 
     clicked = pyqtSignal()
@@ -75,37 +119,46 @@ class ClickableLabel(QLabel):
 
 
 class QCustomQWidget (QWidget):
-    def __init__ (self, parent = None):
+    def __init__ (self, world, parent = None):
         super(QCustomQWidget, self).__init__(parent)
+        self.world = world
+        self.parent = parent
         self.textQVBoxLayout = QVBoxLayout()
         font = QFont('Arial', 30)
-        self.textUpQLabel    = QLabel()
+        self.textUpQLabel = QLabel()
         self.textUpQLabel.setFont(font)
+        self.textUpQLabel.setStyleSheet('color: white')
         self.textQVBoxLayout.addWidget(self.textUpQLabel)
-        self.allQHBoxLayout  = QHBoxLayout()
-        self.iconQLabel      = QLabel()
-        self.allQHBoxLayout.addWidget(self.iconQLabel, 0)
-        self.allQHBoxLayout.addLayout(self.textQVBoxLayout, 1)
+        self.allQHBoxLayout = QHBoxLayout()
+        self.infoIcon = InfoLabel(self.world['description'])
+        self.allQHBoxLayout.addLayout(self.textQVBoxLayout)
+        self.allQHBoxLayout.addWidget(self.infoIcon)
         self.setLayout(self.allQHBoxLayout)
-        # setStyleSheet
-        self.textUpQLabel.setStyleSheet('''
-            color: rgb(255, 255, 255);
-        ''')
 
     def setTextUp (self, text):
         self.textUpQLabel.setText(text)
 
-    def setIcon (self, imagePath):
-        self.iconQLabel.setPixmap(QPixmap(imagePath))
+    def enterEvent(self, event):
+        self.textUpQLabel.setStyleSheet('color: yellow')
+    
+    def leaveEvent(self, event):
+        self.textUpQLabel.setStyleSheet('color: white')
+    
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            self.parent.generate_launch_file(self.world['world'])
+    
 
 class WorldSelection(QWidget):
     updGUI = pyqtSignal()
     switch_window = pyqtSignal()
 
-    def __init__(self, parent = None):
+    def __init__(self, robot_type, parent = None):
         super(WorldSelection, self).__init__(parent)
         self.updGUI.connect(self.update_gui)
         self.parent = parent
+        self.robot_type = robot_type
+        self.enable_gazebo_gui = 'false'
         self.initUI()
     
     def initUI(self):
@@ -116,33 +169,25 @@ class WorldSelection(QWidget):
 
         logo = Logo()
 
-        v3d = View3D('f1', self)
+        v3d = View3D(self.robot_type, self)
         frame = QFrame(self)
         self.r1_layout = QHBoxLayout()
         
+        with open('/home/fran/github/BehaviorSuite/ggui/worlds.json') as f:
+            data = f.read()
+        worlds = json.loads(data)[self.robot_type]
         
         myQListWidget = QListWidget()
         myQListWidget.setStyleSheet("border: 0px;")
         myQListWidget.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
         myQListWidget.verticalScrollBar().setSingleStep(10)
         myQListWidget.setMaximumWidth(800)
-        for index, icon in [
-            ('No.1',  'icon.png'),
-            ('No.2',  'icon.png'),
-            ('No.3',  'icon.png'),
-            ('No.2',  'icon.png'),
-            ('No.3',  'icon.png'),
-            ('No.2',  'icon.png'),
-            ('No.3',  'icon.png')]:
-            # Create QCustomQWidget
-            myQCustomQWidget = QCustomQWidget()
-            myQCustomQWidget.setTextUp(index)
-            myQCustomQWidget.setIcon(':/assets/logo_100.svg')
-            # Create QListWidgetItem
+       
+        for world in worlds:
+            myQCustomQWidget = QCustomQWidget(world, self)
+            myQCustomQWidget.setTextUp(world['name'])
             myQListWidgetItem = QListWidgetItem(myQListWidget)
-            # Set size hint
-            myQListWidgetItem.setSizeHint(QSize(200, 200))
-            # Add QListWidgetItem into QListWidget
+            myQListWidgetItem.setSizeHint(QSize(100, 80))
             myQListWidget.addItem(myQListWidgetItem)
             myQListWidget.setItemWidget(myQListWidgetItem, myQCustomQWidget)     
 
@@ -150,6 +195,21 @@ class WorldSelection(QWidget):
         self.r1_layout.addWidget(myQListWidget)
         
         frame.setLayout(self.r1_layout)   
+
+        # enable_gui = QCheckBox(self)
+        # enable_gui.setText("Gazebo GUI")
+        # enable_gui.setStyleSheet("""QCheckBox { color: white; font-size: 20px;}
+        #                             QCheckBox::indicator {
+        #                                     border: 1px solid white;
+        #                                     background: white;
+        #                                     height: 10px;
+        #                                     width: 10px;
+        #                                     border-radius: 2px
+        #                                 }
+        #                           """)
+        # # enable_gui.setStyleSheet("""QCheckBox; QCheckBox::indicator { width: 400px; height: 400px;}""")
+        # enable_gui.stateChanged.connect(self.handle_gazebo_gui)
+        # enable_gui.setFixedHeight(50)
 
         font = QFont('Arial', 30)
         lbl = ClickableLabel(self)
@@ -161,7 +221,23 @@ class WorldSelection(QWidget):
 
         main_layout.addWidget(logo)
         main_layout.addWidget(frame)
+        # main_layout.addWidget(enable_gui, 2, Qt.AlignCenter)
         main_layout.addWidget(lbl)
+
+    def handle_gazebo_gui(self):
+        self.enable_gui = not self.enable_gazebo_gui
+
+    def generate_launch_file(self, world_name):
+        with open('template.launch') as file:
+            data = file.read()
+        
+        data = data.replace('[WRLD]', world_name)
+        data = data.replace('[GUI]', self.enable_gazebo_gui)
+
+        with open('world.launch', 'w') as file:
+            file.write(data)
+        
+        self.switch_window.emit()
 
     def update_gui(self):
         # self.update()
