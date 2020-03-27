@@ -266,35 +266,45 @@ class MainWindow(QMainWindow):
         # self.setFixedSize(1750,900)
         self.setStyleSheet('background-color: rgb(51,51,51)')
         central_w = QWidget()
-        layout = QVBoxLayout()
+        self.layout = QVBoxLayout()
         self.base = LayoutSel()
-        layout.addWidget(self.base, 0)
+        self.layout.addWidget(self.base, 0)
 
         confirm = QPushButton("Confirm", self)
         confirm.setFixedSize(100,50)
         confirm.clicked.connect(self.get_config)
-        layout.addWidget(confirm)
+        self.layout.addWidget(confirm)
 
-        central_w.setLayout(layout)
+        central_w.setLayout(self.layout)
         self.setCentralWidget(central_w)
 
         self.show()
 
     def get_config(self):
         groups = self.base.collect_groups()
+        self.gs = []
         for id in groups:
+            if id == -1:
+                continue
             frames = groups[id]
-            p = self.get_final_pos(frames)
+            min_row = min(frame.row for frame in frames)
+            min_col = min(frame.col for frame in frames)
+            max_row = max(frame.row for frame in frames)
+            max_col = max(frame.col for frame in frames)
+            print('(widget, {}, {}, {}, {})'.format(min_row, min_col, (max_row - min_row)+1, (max_col - min_col)+1))
+            self.gs.append( (min_row, min_col, (max_row - min_row)+1, (max_col - min_col)+1))
+        self.paint_new(self.gs)
 
-    
-    def get_final_pos(self, frames):
-        from operator import attrgetter
-        min_row = min(frame.row for frame in frames)
-        min_col = min(frame.col for frame in frames)
-        max_row = max(frame.row for frame in frames)
-        max_col = max(frame.col for frame in frames)
-        print('(widget, {}, {}, {}, {})'.format(min_row, min_col, (max_row - min_row)+1, (max_col - min_col)+1))
-
+    def paint_new(self, config):
+        greedy = QGridLayout()
+        self.layout.addLayout(greedy)
+        positions = config
+        for c in positions:
+            lbl = QLabel()
+            lbl.setStyleSheet('border: 2px solid white')
+            lbl.setPixmap(QPixmap(':/assets/logo_100.svg'))
+            lbl.setAlignment(Qt.AlignCenter)
+            greedy.addWidget(lbl, c[0], c[1], c[2], c[3])
 
 if __name__ == "__main__":
     import sys
