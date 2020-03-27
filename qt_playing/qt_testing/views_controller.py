@@ -112,6 +112,13 @@ class Controller:
 
     def show_layout_selection(self):
         print('A layouts')
+        delete_widgets_from(self.parent.main_layout)
+        self.world_selector.close()
+        del self.world_selector
+        self.layout_selector = LayoutSelector(self.parent)
+        self.parent.main_layout.addWidget(self.layout_selector)
+        self.layout_selector.switch_window.connect(self.show_main_view)
+        self.layout_selector.show()
 
 def delete_widgets_from(layout):
     """ memory secure. """
